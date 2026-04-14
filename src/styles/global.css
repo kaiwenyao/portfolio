@@ -1,0 +1,272 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg-dark: #0d1224;
+  --color-bg-darker: #050816;
+  --color-bg-card: #11152c;
+  --color-bg-card-hover: #1a1443;
+  --color-border: #2a2e5a;
+  --color-border-hover: #353951;
+  --color-pink: #f626af;
+  --color-violet: #8228ec;
+  --color-violet-dark: #0025ba;
+  --color-cyan: #16f2b3;
+  --color-cyan-dark: #0891b2;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #d3d8e8;
+  --color-text-muted: #99a1af;
+  --color-orange: #ff8b1a;
+  --color-green: #05df72;
+}
+
+:root {
+  --color-bg-dark: #0d1224;
+  --color-bg-darker: #050816;
+  --color-bg-card: #11152c;
+  --color-bg-card-hover: #1a1443;
+  --color-border: #2a2e5a;
+  --color-border-hover: #353951;
+  --color-pink: #f626af;
+  --color-violet: #8228ec;
+  --color-violet-dark: #0025ba;
+  --color-cyan: #16f2b3;
+  --color-cyan-dark: #0891b2;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #d3d8e8;
+  --color-text-muted: #99a1af;
+  --color-orange: #ff8b1a;
+  --color-green: #05df72;
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-violet) var(--color-bg-darker);
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--color-bg-darker);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-violet);
+    border-radius: 3px;
+  }
+
+  ::selection {
+    background: var(--color-pink);
+    color: white;
+  }
+}
+
+body {
+  background-color: var(--color-bg-dark);
+  color: var(--color-text-secondary);
+  font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Gradient Text */
+.gradient-text {
+  background: linear-gradient(135deg, var(--color-pink) 0%, var(--color-violet) 50%, var(--color-cyan) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-text-pink {
+  background: linear-gradient(90deg, var(--color-pink), var(--color-violet));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Glow Card Effect */
+.glow-container {
+  --spread: 60;
+}
+
+.glow-card {
+  --active: 0;
+  --start: 0;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.glow-card:is(:hover, :focus-visible) {
+  --active: 1;
+  z-index: 2;
+  transform: translateY(-4px);
+}
+
+.glow-card .glows {
+  pointer-events: none;
+  filter: blur(calc(var(--blur, 20) * 1px));
+  position: absolute;
+  inset: 0;
+  opacity: var(--active, 0);
+  transition: opacity 0.5s ease;
+}
+
+.glow-card .glows::before,
+.glow-card .glows::after {
+  content: "";
+  position: absolute;
+  inset: -5px;
+  border-radius: 12px;
+  background: conic-gradient(
+    from 180deg at 50% 70%,
+    var(--color-pink) 0deg,
+    var(--color-violet) 72deg,
+    var(--color-pink) 144deg,
+    var(--color-violet-dark) 216deg,
+    var(--color-pink) 288deg,
+    var(--color-pink) 360deg
+  );
+  animation: glow-rotate 4s linear infinite;
+}
+
+.glow-card .glows::after {
+  inset: 0;
+  background: conic-gradient(
+    from calc((var(--start) + 45) * 1deg),
+    transparent 0deg,
+    rgba(255, 255, 255, 0.3) 30deg,
+    transparent 60deg
+  );
+}
+
+@keyframes glow-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Background Gradient Orb */
+.bg-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.bg-orb-pink {
+  background: var(--color-pink);
+}
+
+.bg-orb-violet {
+  background: var(--color-violet);
+}
+
+.bg-orb-cyan {
+  background: var(--color-cyan);
+}
+
+/* Card Styles */
+.card {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  background: var(--color-bg-card-hover);
+  border-color: var(--color-border-hover);
+  box-shadow: 0 0 30px rgba(246, 38, 175, 0.1), 0 0 60px rgba(130, 40, 236, 0.1);
+}
+
+/* Skill Tag */
+.skill-tag {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 20px;
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  transition: all 0.3s ease;
+  min-width: 90px;
+}
+
+.skill-tag:hover {
+  border-color: var(--color-pink);
+  color: var(--color-pink);
+  box-shadow: 0 0 25px rgba(246, 38, 175, 0.25);
+  transform: translateY(-4px);
+}
+
+/* Section Divider */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-border), transparent);
+}
+
+/* Animated Border */
+@keyframes border-glow {
+  0%, 100% { border-color: var(--color-border); }
+  50% { border-color: var(--color-pink); }
+}
+
+.border-animated {
+  animation: border-glow 3s ease-in-out infinite;
+}
+
+/* Fade In Animation */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.8s ease forwards;
+}
+
+/* Stagger Children */
+.stagger-children > * {
+  opacity: 0;
+  animation: fade-in-up 0.6s ease forwards;
+}
+
+.stagger-children > *:nth-child(1) { animation-delay: 0.1s; }
+.stagger-children > *:nth-child(2) { animation-delay: 0.2s; }
+.stagger-children > *:nth-child(3) { animation-delay: 0.3s; }
+.stagger-children > *:nth-child(4) { animation-delay: 0.4s; }
+.stagger-children > *:nth-child(5) { animation-delay: 0.5s; }
+.stagger-children > *:nth-child(6) { animation-delay: 0.6s; }
+.stagger-children > *:nth-child(7) { animation-delay: 0.7s; }
+.stagger-children > *:nth-child(8) { animation-delay: 0.8s; }
+
+/* Tech Logo */
+.tech-logo {
+  width: 24px;
+  height: 24px;
+  filter: grayscale(100%);
+  opacity: 0.7;
+  transition: all 0.3s ease;
+}
+
+.tech-logo:hover {
+  filter: grayscale(0%);
+  opacity: 1;
+}
