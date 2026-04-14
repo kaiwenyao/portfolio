@@ -92,14 +92,8 @@ body {
   background-clip: text;
 }
 
-/* Glow Card Effect */
-.glow-container {
-  --spread: 60;
-}
-
 .glow-card {
   --active: 0;
-  --start: 0;
   position: relative;
   transition: all 0.3s ease;
 }
@@ -108,48 +102,6 @@ body {
   --active: 1;
   z-index: 2;
   transform: translateY(-4px);
-}
-
-.glow-card .glows {
-  pointer-events: none;
-  filter: blur(calc(var(--blur, 20) * 1px));
-  position: absolute;
-  inset: 0;
-  opacity: var(--active, 0);
-  transition: opacity 0.5s ease;
-}
-
-.glow-card .glows::before,
-.glow-card .glows::after {
-  content: "";
-  position: absolute;
-  inset: -5px;
-  border-radius: 12px;
-  background: conic-gradient(
-    from 180deg at 50% 70%,
-    var(--color-pink) 0deg,
-    var(--color-violet) 72deg,
-    var(--color-pink) 144deg,
-    var(--color-violet-dark) 216deg,
-    var(--color-pink) 288deg,
-    var(--color-pink) 360deg
-  );
-  animation: glow-rotate 4s linear infinite;
-}
-
-.glow-card .glows::after {
-  inset: 0;
-  background: conic-gradient(
-    from calc((var(--start) + 45) * 1deg),
-    transparent 0deg,
-    rgba(255, 255, 255, 0.3) 30deg,
-    transparent 60deg
-  );
-}
-
-@keyframes glow-rotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
 }
 
 /* Background Gradient Orb */
@@ -269,4 +221,30 @@ body {
 .tech-logo:hover {
   filter: grayscale(0%);
   opacity: 1;
+}
+
+/* Skill Card - hover without layout shift */
+.skill-card {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.skill-card:hover {
+  border-color: var(--color-pink);
+  box-shadow: 0 0 25px rgba(246, 38, 175, 0.25);
+}
+
+.skill-card img {
+  transition: transform 0.2s ease;
+}
+
+.skill-card:hover img {
+  transform: scale(1.1);
+}
+
+/* Focus states for accessibility */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--color-pink);
+  outline-offset: 2px;
+  border-radius: 4px;
 }

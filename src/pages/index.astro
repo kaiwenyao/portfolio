@@ -2,19 +2,19 @@
 import Layout from '../layouts/Layout.astro';
 
 const persona = {
-  name: "你的名字",
-  title: "软件工程师 / 全栈开发者",
-  intro: "热爱技术，专注于构建优雅的解决方案。我热爱学习新技术，与他人合作总是让我充满热情。我学习速度快，总是迎接新的挑战。",
+  name: "Kaiwen Yao",
+  title: "Software Engineer / Full Stack Developer",
+  intro: "Passionate about technology and building elegant solutions. I love learning new things and collaborating with others. I'm a quick learner always ready to take on new challenges.",
   skills: [
     { name: "JavaScript", icon: "javascript" },
     { name: "TypeScript", icon: "typescript" },
     { name: "React", icon: "react" },
-    { name: "Next.js", icon: "nextjs" },
-    { name: "Node.js", icon: "nodejs" },
-    { name: "Python", icon: "python" },
+            { name: "Python", icon: "python" },
     { name: "Java", icon: "java" },
+    { name: "Spring Boot", icon: "springboot" },
+    { name: "Spring Cloud", icon: "springcloud" },
     { name: "PostgreSQL", icon: "postgresql" },
-    { name: "MongoDB", icon: "mongodb" },
+    { name: "MySQL", icon: "mysql" },
     { name: "Docker", icon: "docker" },
     { name: "AWS", icon: "aws" },
     { name: "Git", icon: "git" },
@@ -28,33 +28,33 @@ const persona = {
   ],
   education: [
     {
-      period: "2024 - 至今",
-      degree: "硕士 - 计算机科学",
-      school: "你的大学",
-      description: "研究方向 / 重点课程"
+      period: "2024 - Present",
+      degree: "M.S. Computer Science",
+      school: "Your University",
+      description: "Research focus / Key courses"
     },
     {
       period: "2020 - 2024",
-      degree: "学士 - 相关专业",
-      school: "你的大学",
-      description: "相关课程 / 项目"
+      degree: "B.S. Related Major",
+      school: "Your University",
+      description: "Relevant courses / Projects"
     }
   ],
   experience: [
     {
-      period: "2024 - 至今",
-      role: "职位名称",
-      company: "公司名称",
-      description: "工作描述"
+      period: "2024 - Present",
+      role: "Job Title",
+      company: "Company Name",
+      description: "Job description"
     }
   ],
   projects: [
     {
-      name: "项目名称",
-      tech: "技术栈",
-      description: "项目描述",
+      name: "Project Name",
+      tech: "Tech Stack",
+      description: "Project description",
       url: "https://github.com/yourusername/project",
-      highlight: "项目亮点"
+      highlight: "Project highlight"
     }
   ]
 };
@@ -142,7 +142,7 @@ const icons: Record<string, string> = {
           <p class="text-xl md:text-2xl text-[#d3d8e8] mb-8 max-w-2xl mx-auto leading-relaxed">
             {persona.title}
           </p>
-          <p class="text-[#99a1af] mb-12 max-w-xl mx-auto leading-relaxed">
+          <p class="text-[#99a1af] mb-20 max-w-xl mx-auto leading-relaxed">
             {persona.intro}
           </p>
           <div class="flex items-center justify-center gap-6">
@@ -178,27 +178,31 @@ const icons: Record<string, string> = {
 
       <!-- Marquee Container -->
       <div class="relative overflow-hidden">
-        <div class="flex gap-4 animate-marquee">
+        <div class="flex gap-4 animate-marquee flex-nowrap">
           {persona.skills.map((skill) => (
-            <div class="flex flex-col items-center gap-2 px-5 py-4 bg-[#11152c] border border-[#2a2e5a] rounded-xl min-w-[100px] transition-all duration-300 hover:border-[#f626af] hover:shadow-[0_0_25px_rgba(246,38,175,0.25)] hover:-translate-y-1">
+            <div class="skill-card flex flex-col items-center gap-3 px-5 py-5 bg-[#11152c] border border-[#2a2e5a] rounded-xl min-w-[120px] cursor-pointer shrink-0">
               <img
                 src={`/skills/${skill.icon}.svg`}
                 alt={skill.name}
-                class="w-12 h-12 object-contain"
+                class="w-16 h-16 object-contain"
+                onerror={`this.src='/skills/${skill.icon}.png'`}
               />
-              <span class="text-sm text-[#d3d8e8]">{skill.name}</span>
+              <span class="text-sm text-[#d3d8e8] font-medium">{skill.name}</span>
             </div>
           ))}
-          {persona.skills.map((skill) => (
-            <div class="flex flex-col items-center gap-2 px-5 py-4 bg-[#11152c] border border-[#2a2e5a] rounded-xl min-w-[100px] transition-all duration-300 hover:border-[#f626af] hover:shadow-[0_0_25px_rgba(246,38,175,0.25)] hover:-translate-y-1">
-              <img
-                src={`/skills/${skill.icon}.svg`}
-                alt={skill.name}
-                class="w-12 h-12 object-contain"
-              />
-              <span class="text-sm text-[#d3d8e8]">{skill.name}</span>
-            </div>
-          ))}
+          {/* Second copy - only for seamless loop, hidden when reduced-motion */}
+          <div class="reduced-motion-hidden flex gap-4 shrink-0">
+            {persona.skills.map((skill) => (
+              <div class="skill-card flex flex-col items-center gap-3 px-5 py-5 bg-[#11152c] border border-[#2a2e5a] rounded-xl min-w-[120px] cursor-pointer">
+                <img
+                  src={`/skills/${skill.icon}.svg`}
+                  alt={skill.name}
+                  class="w-16 h-16 object-contain"
+                />
+                <span class="text-sm text-[#d3d8e8] font-medium">{skill.name}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -219,14 +223,11 @@ const icons: Record<string, string> = {
             {persona.experience.map((exp, i) => (
               <div class={`relative flex flex-col md:flex-row gap-8 ${i % 2 === 0 ? 'md:flex-row-reverse' : ''}`}>
                 <!-- Timeline dot -->
-                <div class="absolute left-0 md:left-1/2 w-4 h-4 rounded-full bg-[#f626af] transform -translate-x-[6px] md:-translate-x-[7px] mt-6 glow-card">
-                  <div class="glows"></div>
-                </div>
+                <div class="absolute left-0 md:left-1/2 w-4 h-4 rounded-full bg-[#f626af] transform -translate-x-[6px] md:-translate-x-[7px] mt-6 glow-card"></div>
 
                 <!-- Content -->
                 <div class={`flex-1 ml-8 md:ml-0 ${i % 2 === 0 ? 'md:pr-12 md:text-right' : 'md:pl-12'}`}>
                   <div class="card p-6 glow-card">
-                    <div class="glows"></div>
                     <div class="relative">
                       <span class="text-[#f626af] text-sm font-medium">{exp.period}</span>
                       <h3 class="text-xl font-bold text-white mt-2">{exp.role}</h3>
@@ -254,7 +255,6 @@ const icons: Record<string, string> = {
         <div class="space-y-6">
           {persona.education.map((edu, i) => (
             <div class="glow-card">
-              <div class="glows"></div>
               <div class="card p-6 relative">
                 <div class="flex flex-col md:flex-row md:items-center gap-4">
                   <div class="flex-1">
@@ -282,7 +282,6 @@ const icons: Record<string, string> = {
         <div class="grid md:grid-cols-2 gap-6">
           {persona.projects.map((project, i) => (
             <div class="glow-card">
-              <div class="glows"></div>
               <div class="card p-6 h-full relative flex flex-col">
                 <div class="flex items-start justify-between mb-3">
                   <h3 class="text-xl font-bold text-white">{project.name}</h3>
@@ -350,7 +349,7 @@ const icons: Record<string, string> = {
     <footer class="py-8 px-6 border-t border-[#2a2e5a]/50">
       <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
         <p class="text-[#99a1af] text-sm">
-          © 2024 {persona.name}. All rights reserved.
+          © 2026 Kaiwen Yao. All rights reserved.
         </p>
         <p class="text-[#99a1af] text-sm">
           Built with <span class="text-[#f626af]">Astro</span> + <span class="text-[#8228ec]">Tailwind CSS</span>
@@ -372,6 +371,17 @@ const icons: Record<string, string> = {
 
   .animate-marquee:hover {
     animation-play-state: paused;
+  }
+
+  /* Respect reduced motion preference */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-marquee {
+      animation: none;
+      overflow-x: auto;
+    }
+    .reduced-motion-hidden {
+      display: none;
+    }
   }
 </style>
 
