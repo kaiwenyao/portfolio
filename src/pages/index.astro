@@ -109,7 +109,7 @@ const icons: Record<string, string> = {
       </ul>
 
       <!-- Mobile menu button -->
-      <button id="menu-btn" class="md:hidden p-2 text-white hover:text-[#f626af] transition-colors" aria-label="Toggle menu" set:html={icons.menu} />
+      <button id="menu-btn" class="md:hidden p-2 text-white hover:text-[#f626af] transition-colors" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-menu" set:html={icons.menu} />
     </div>
 
     <!-- Mobile Nav -->
@@ -198,6 +198,7 @@ const icons: Record<string, string> = {
                   src={`/skills/${skill.icon}.svg`}
                   alt={skill.name}
                   class="w-16 h-16 object-contain"
+                  onerror={`this.src='/skills/${skill.icon}.png'`}
                 />
                 <span class="text-sm text-[#d3d8e8] font-medium">{skill.name}</span>
               </div>
@@ -221,12 +222,12 @@ const icons: Record<string, string> = {
 
           <div class="space-y-12">
             {persona.experience.map((exp, i) => (
-              <div class={`relative flex flex-col md:flex-row gap-8 ${i % 2 === 0 ? 'md:flex-row-reverse' : ''}`}>
+              <div class="relative flex flex-col md:flex-row gap-8">
                 <!-- Timeline dot -->
                 <div class="absolute left-0 md:left-1/2 w-4 h-4 rounded-full bg-[#f626af] transform -translate-x-[6px] md:-translate-x-[7px] mt-6 glow-card"></div>
 
                 <!-- Content -->
-                <div class={`flex-1 ml-8 md:ml-0 ${i % 2 === 0 ? 'md:pr-12 md:text-right' : 'md:pl-12'}`}>
+                <div class={`flex-1 ml-8 md:ml-0 ${i % 2 !== 0 ? 'md:pr-12 md:text-right' : 'md:pl-12'}`}>
                   <div class="card p-6 glow-card">
                     <div class="relative">
                       <span class="text-[#f626af] text-sm font-medium">{exp.period}</span>
@@ -349,7 +350,7 @@ const icons: Record<string, string> = {
     <footer class="py-8 px-6 border-t border-[#2a2e5a]/50">
       <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
         <p class="text-[#99a1af] text-sm">
-          © 2026 Kaiwen Yao. All rights reserved.
+          © {new Date().getFullYear()} Kaiwen Yao. All rights reserved.
         </p>
         <p class="text-[#99a1af] text-sm">
           Built with <span class="text-[#f626af]">Astro</span> + <span class="text-[#8228ec]">Tailwind CSS</span>
@@ -390,12 +391,14 @@ const icons: Record<string, string> = {
   const mobileMenu = document.getElementById('mobile-menu');
 
   menuBtn?.addEventListener('click', () => {
-    mobileMenu?.classList.toggle('hidden');
+    const isHidden = mobileMenu?.classList.toggle('hidden');
+    menuBtn?.setAttribute('aria-expanded', String(!isHidden));
   });
 
   mobileMenu?.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', () => {
       mobileMenu?.classList.add('hidden');
+      menuBtn?.setAttribute('aria-expanded', 'false');
     });
   });
 
