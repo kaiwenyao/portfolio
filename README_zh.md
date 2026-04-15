@@ -2,6 +2,8 @@
 
 使用 Astro 和 Tailwind CSS 构建的个人作品集网站。
 
+[English](./README.md)
+
 ## 技术栈
 
 - **框架:** Astro
@@ -10,8 +12,10 @@
 
 ## 快速开始
 
+```sh
 pnpm install
 pnpm dev
+```
 
 ## 命令
 
