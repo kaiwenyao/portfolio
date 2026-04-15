@@ -1,9 +1,10 @@
-# Kaiwen Yao Portfolio
+# Kaiwen Yaos Portfolio
 
 AstroとTailwind CSSで構築された个人ポートフォリオサイト。
 
 [English](./README.md)
 [中文](./README_zh.md)
+[日本語](./README_ja.md)
 
 ## 技術スタック
 
