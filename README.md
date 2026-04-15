@@ -1,8 +1,10 @@
-# Kaiwen Yao's Portfolio
+# Kaiwen Yaos Portfolio
 
 Personal portfolio built with Astro and Tailwind CSS.
 
-[中文版](./README_zh.md)
+[English](./README.md)
+[中文](./README_zh.md)
+[日本語](./README_ja.md)
 
 ## Tech Stack
 
