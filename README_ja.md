@@ -1,6 +1,6 @@
 # Kaiwen Yaos Portfolio
 
-AstroとTailwind CSSで構築された个人ポートフォリオサイト。
+AstroとTailwind CSSで構築された個人ポートフォリオサイト。
 
 [English](./README.md)
 [中文](./README_zh.md)
