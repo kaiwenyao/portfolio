@@ -162,8 +162,8 @@ const icons: Record<string, string> = {
           </div>
 
           <!-- Right: Code Window -->
-          <div class="order-1 lg:order-2 flex lg:justify-start lg:ml-12">
-            <div class="w-full min-w-[700px] max-w-3xl">
+          <div class="order-1 lg:order-2 flex lg:justify-start lg:ml-12 overflow-x-auto">
+            <div class="w-full min-w-0 lg:min-w-[700px] max-w-3xl">
               <!-- macOS Window Frame -->
               <div class="bg-[#1e1e2e] rounded-xl overflow-hidden shadow-2xl shadow-[#f626af]/10 border border-[#313244]">
                 <!-- Title Bar -->
@@ -228,7 +228,7 @@ const icons: Record<string, string> = {
           {/* Second copy - only for seamless loop, hidden when reduced-motion */}
           <div class="reduced-motion-hidden flex gap-4 shrink-0">
             {persona.skills.map((skill) => (
-              <div class="skill-card flex flex-col items-center gap-3 px-5 py-5 bg-[#11152c] border border-[#2a2e5a] rounded-xl min-w-[120px] cursor-pointer">
+              <div class="skill-card flex flex-col items-center gap-3 px-5 py-5 bg-[#11152c] border border-[#2a2e5a] rounded-xl min-w-[120px] cursor-pointer shrink-0">
                 <img
                   src={`/skills/${skill.icon}.svg`}
                   alt={skill.name}
@@ -257,7 +257,7 @@ const icons: Record<string, string> = {
 
           <div class="space-y-12">
             {persona.experience.map((exp, i) => (
-              <div class="relative flex flex-col md:flex-row gap-8">
+              <div class={`relative flex flex-col md:flex-row gap-8 ${i % 2 !== 0 ? 'md:flex-row-reverse' : ''}`}>
                 <!-- Timeline dot -->
                 <div class="absolute left-0 md:left-1/2 w-4 h-4 rounded-full bg-[#f626af] transform -translate-x-[6px] md:-translate-x-[7px] mt-6 glow-card"></div>
 
