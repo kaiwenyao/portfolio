@@ -1,6 +1,8 @@
-# Kaiwen Yao's Portfolio
+# Kaiwen Yaos Portfolio
 
 Personal portfolio built with Astro and Tailwind CSS.
+
+[中文版](./README_zh.md)
 
 ## Tech Stack
 
@@ -10,15 +12,13 @@ Personal portfolio built with Astro and Tailwind CSS.
 
 ## Getting Started
 
-```sh
 pnpm install
 pnpm dev
-```
 
 ## Commands
 
 | Command        | Action                           |
 | :------------- | :------------------------------- |
-| `pnpm dev`     | Start dev server at :4321       |
-| `pnpm build`   | Build production site to `./dist/` |
-| `pnpm preview` | Preview build locally            |
+| pnpm dev       | Start dev server at :4321        |
+| pnpm build     | Build production site to ./dist/ |
+| pnpm preview   | Preview build locally            |
