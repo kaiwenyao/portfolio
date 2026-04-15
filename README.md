@@ -1,4 +1,4 @@
-# Kaiwen Yaos Portfolio
+# Kaiwen Yao's Portfolio
 
 Personal portfolio built with Astro and Tailwind CSS.
 
