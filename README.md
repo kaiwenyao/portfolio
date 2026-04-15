@@ -1,4 +1,4 @@
-# Kaiwen Yao's Portfolio
+# Kaiwen Yaos Portfolio
 
 Personal portfolio built with Astro and Tailwind CSS.
 
@@ -12,8 +12,10 @@ Personal portfolio built with Astro and Tailwind CSS.
 
 ## Getting Started
 
+```sh
 pnpm install
 pnpm dev
+```
 
 ## Commands
 
