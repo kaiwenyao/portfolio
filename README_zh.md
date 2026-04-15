@@ -3,6 +3,8 @@
 使用 Astro 和 Tailwind CSS 构建的个人作品集网站。
 
 [English](./README.md)
+[中文](./README_zh.md)
+[日本語](./README_ja.md)
 
 ## 技术栈
 
