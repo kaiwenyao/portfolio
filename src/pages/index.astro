@@ -70,24 +70,6 @@ const persona = {
       url: "https://ucd-hub.com/",
       highlight: "Production platform serving UCD international students"
     }
-  ],
-  research: [
-    {
-      period: "2023 - 2024",
-      title: "Intelligent Observation of Glacier Changes Based on Multi-source Data",
-      role: "Core Researcher",
-      advisor: "Lu Li",
-      award: "Third Prize, Fengru Cup Technology Competition",
-      description: "Selected 3D Gaussian Splatting as the optimal method for 3D glacier reconstruction after evaluating multiple data sources. Collected and processed visual and LiDAR data using Unity3D, UE5, and C++. Developed a LiDAR simulation and visualisation module replicating real Pandar40 sensor data for topographic analysis."
-    },
-    {
-      period: "2022 - 2023",
-      title: "3D Reconstruction of the Martian Surface",
-      role: "Core Researcher",
-      advisor: "Lu Li",
-      award: "",
-      description: "Implemented data acquisition and terrain modelling in Unity3D using custom C# scripts for object and camera control. Integrated elevation maps and satellite imagery from international Mars missions through GIS and image processing. Reconstructed a realistic Martian surface model by generating local depth data via ray-casting scripts. Applied NeRF-based algorithms, adopting Instant-NGP to enhance reconstruction efficiency and performance."
-    }
   ]
 };
 
@@ -97,7 +79,6 @@ const navItems = [
   { name: "SKILLS", href: "#skills" },
   { name: "EDUCATION", href: "#education" },
   { name: "PROJECTS", href: "#projects" },
-  { name: "RESEARCH", href: "#research" },
   { name: "CONTACT", href: "#contact" },
 ];
 
@@ -371,34 +352,6 @@ const icons: Record<string, string> = {
                   <span set:html={icons.arrow} />
                   {project.highlight}
                 </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-
-    <!-- Research Section -->
-    <section id="research" class="py-20 px-6 bg-[#050816]/50">
-      <div class="max-w-4xl mx-auto">
-        <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-4">RESEARCH</h2>
-        <p class="text-[#99a1af] text-center mb-12">Academic research experience</p>
-
-        <div class="space-y-6">
-          {persona.research.map((res, i) => (
-            <div class="glow-card">
-              <div class="card p-6 relative">
-                <div class="flex flex-col md:flex-row md:items-start gap-4">
-                  <div class="flex-1">
-                    <span class="text-[#8228ec] text-sm font-medium">{res.period}</span>
-                    <h3 class="text-xl font-bold text-white mt-2">{res.title}</h3>
-                    <div class="text-[#16f2b3] mt-1">{res.role} · Advisor: {res.advisor}</div>
-                    {res.award && (
-                      <div class="text-[#f626af] text-sm mt-1 font-medium">{res.award}</div>
-                    )}
-                  </div>
-                </div>
-                <p class="text-[#99a1af] mt-4 leading-relaxed">{res.description}</p>
               </div>
             </div>
           ))}
