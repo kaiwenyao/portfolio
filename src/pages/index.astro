@@ -4,64 +4,101 @@ import Layout from '../layouts/Layout.astro';
 const persona = {
   name: "Kaiwen Yao",
   title: "Software Engineer / Full Stack Developer",
-  intro: "Passionate about technology and building elegant solutions. I love learning new things and collaborating with others. I'm a quick learner always ready to take on new challenges.",
+  intro: "M.S. Computer Science student at University College Dublin with a strong foundation in full-stack development. Experienced in building production-grade applications using Spring Boot, React, Python/FastAPI, and Go. Passionate about creating elegant solutions, from AI-powered platforms to real-time systems. Always eager to learn and tackle new challenges.",
   skills: [
-    { name: "JavaScript", icon: "javascript" },
-    { name: "TypeScript", icon: "typescript" },
-    { name: "React", icon: "react" },
-            { name: "Python", icon: "python" },
     { name: "Java", icon: "java" },
-    { name: "Spring Boot", icon: "springboot" },
-    { name: "Spring Cloud", icon: "springcloud" },
-    { name: "PostgreSQL", icon: "postgresql" },
-    { name: "MySQL", icon: "mysql" },
-    { name: "Docker", icon: "docker" },
-    { name: "AWS", icon: "aws" },
-    { name: "Git", icon: "git" },
-    { name: "Vue", icon: "vue" },
+    { name: "TypeScript", icon: "typescript" },
+    { name: "Python", icon: "python" },
     { name: "C++", icon: "cplusplus" },
+    { name: "React", icon: "react" },
+    { name: "Spring Boot", icon: "springboot" },
+    { name: "MySQL", icon: "mysql" },
+    { name: "PostgreSQL", icon: "postgresql" },
+    { name: "Docker", icon: "docker" },
+    { name: "Git", icon: "git" },
+    { name: "Tailwind CSS", icon: "tailwind" },
+    { name: "AWS", icon: "aws" },
+    { name: "Vue", icon: "vue" },
+    { name: "JavaScript", icon: "javascript" },
   ],
   socials: [
-    { name: "GitHub", url: "https://github.com/yourusername", icon: "github" },
-    { name: "LinkedIn", url: "https://linkedin.com/in/yourusername", icon: "linkedin" },
-    { name: "Email", url: "mailto:your@email.com", icon: "mail" },
+    { name: "GitHub", url: "https://github.com/kaiwenyao", icon: "github" },
+    { name: "LinkedIn", url: "https://www.linkedin.com/in/kaiwen-yao-356385366/", icon: "linkedin" },
+    { name: "Email", url: "mailto:kaiwen.yao.ie@gmail.com", icon: "mail" },
   ],
   education: [
     {
-      period: "2024 - Present",
+      period: "2025 - Present",
       degree: "M.S. Computer Science",
-      school: "Your University",
-      description: "Research focus / Key courses"
+      school: "University College Dublin",
+      description: "Dublin, Ireland"
     },
     {
-      period: "2020 - 2024",
-      degree: "B.S. Related Major",
-      school: "Your University",
-      description: "Relevant courses / Projects"
+      period: "2021 - 2025",
+      degree: "B.S. Power Engineering of Flight Vehicles",
+      school: "Beihang University",
+      description: "Beijing, China | GPA: 3.58/4.0 | Honours: Chinese Government Scholarship (2023), Academic Excellence Scholarship, 2nd Prize (2024)"
     }
   ],
   experience: [
     {
-      period: "2024 - Present",
-      role: "Job Title",
-      company: "Company Name",
-      description: "Job description"
+      period: "Mar 2026 - Apr 2026",
+      role: "Lead Backend Developer",
+      company: "TrueMoment — Snowfall Ltd (Remote)",
+      description: "Built the entire API service for an Instagram-style social app with dual-camera photo sharing using Go, Gin, GORM, and MySQL. Implemented 9 production modules with layered Handler→Service→Repo architecture, JWT authentication with Redis-backed logout token blacklisting, SMS verification, Aliyun OSS image upload with CDN delivery, cursor-paginated feed endpoints, and a notification system triggered on like/comment/follow events. Wrote unit and integration tests with testcontainers-go. Configured Alibaba Cloud Yunxiao (Flow) CI/CD pipeline with ACR container deployment."
     }
   ],
   projects: [
     {
-      name: "Project Name",
-      tech: "Tech Stack",
-      description: "Project description",
-      url: "https://github.com/yourusername/project",
-      highlight: "Project highlight"
+      name: "Firmament Take-Out",
+      tag: "Full-Stack Food Delivery Platform",
+      tech: ["Spring Boot 3", "React 19", "TypeScript", "MySQL", "Redis", "Docker"],
+      bullets: [
+        "Built a full-stack food delivery system with separate admin and user-facing frontends using a decoupled architecture",
+        "Developed the backend RESTful API with Spring Boot 3, MyBatis Plus, and MySQL, covering employee, category, dish, combo meal, order, shopping cart, and address modules",
+        "Implemented JWT + Refresh Token authentication with automatic renewal; migrated password hashing from MD5 to BCrypt with backward-compatible verification",
+        "Integrated Redis for shop status caching and Spring Cache with custom JSON serialisation to preserve type information during deserialisation",
+        "Built the admin dashboard with React 19, shadcn/ui, real-time order notifications via WebSocket, and data visualisation with ECharts",
+        "Built the mobile user frontend with React 19 and antd-mobile; implemented route-level lazy loading for optimised bundle splitting",
+        "Set up a Jenkins CI/CD pipeline with automated testing, Docker image builds, and production deployment"
+      ],
+      url: "https://firmament-admin.kaiwen.dev/",
+      highlight: "Live admin dashboard with real-time order notifications"
+    },
+    {
+      name: "Dublin Bikes Assistant",
+      tag: "Real-Time Bike-Sharing Intelligence Platform",
+      tech: ["Python/Flask", "React 19", "TypeScript", "MySQL", "scikit-learn", "LangChain"],
+      bullets: [
+        "Built a full-stack bike-sharing platform with a Python/Flask REST API, React 19 + TypeScript SPA, and an autonomous scraper daemon polling the JCDecaux API every 5 minutes",
+        "Trained a Random Forest model (scikit-learn) on historical availability data to forecast station bike counts up to 48 hours ahead, with the model pre-loaded at server start for low-latency prediction endpoints",
+        "Integrated LangChain with Alibaba Qwen to power an AI chat assistant with full conversation history, streaming responses to the browser via Server-Sent Events (SSE)",
+        "Implemented JWT dual-token authentication with token-version invalidation for instant logout, and an email verification flow with rate-limited 6-digit codes",
+        "Designed an interactive map with Google Maps for real-time station markers and availability history charts (Recharts); implemented an optimal bike route planner using the Google Maps Distance Matrix API"
+      ],
+      url: "https://bikes.kaiwen.dev",
+      highlight: "AI-powered bike availability forecasting and route planning"
+    },
+    {
+      name: "UCDHub",
+      tag: "Campus Community Platform for UCD Students",
+      tech: ["Python/FastAPI", "React 18", "MySQL", "Redis", "SQLAlchemy 2.0"],
+      bullets: [
+        "Developed a production campus platform serving UCD international students with structured course reviews, a secondary marketplace, and rental listings",
+        "Designed an async REST API with SQLAlchemy 2.0 supporting multi-dimensional course ranking across 6,000+ records, with rate-limiting middleware and paginated endpoints",
+        "Implemented a points and membership system featuring daily check-in rewards and point-based redemption (50 points → 1-day premium), gating extended review access to drive user engagement",
+        "Integrated dual-channel email verification (6-digit code and tokenised link) with Redis-backed JWT token blacklisting, securing the authentication layer end-to-end",
+        "Automated containerised deployment via Jenkins and Docker, covering build, test, and production rollout as sole developer"
+      ],
+      url: "https://ucd-hub.com/",
+      highlight: "Production platform serving UCD international students"
     }
   ]
 };
 
 const navItems = [
   { name: "ABOUT", href: "#about" },
-  { name: "EXPERIENCE", href: "#experience" },
+  { name: "INTERNSHIP", href: "#internship" },
   { name: "SKILLS", href: "#skills" },
   { name: "EDUCATION", href: "#education" },
   { name: "PROJECTS", href: "#projects" },
@@ -245,36 +282,23 @@ const icons: Record<string, string> = {
       <div class="section-divider mt-16 max-w-4xl mx-auto"></div>
     </section>
 
-    <!-- Experience Section -->
-    <section id="experience" class="py-20 px-6">
+    <!-- Internship Section -->
+    <section id="internship" class="py-20 px-6">
       <div class="max-w-4xl mx-auto">
-        <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-4">EXPERIENCE</h2>
-        <p class="text-[#99a1af] text-center mb-12">My professional journey</p>
+        <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-4">INTERNSHIP</h2>
+        <p class="text-[#99a1af] text-center mb-12">My internship experience</p>
 
-        <div class="relative">
-          <!-- Timeline line -->
-          <div class="absolute left-0 md:left-1/2 top-0 bottom-0 w-[1px] bg-gradient-to-b from-[#f626af] via-[#8228ec] to-transparent"></div>
-
-          <div class="space-y-12">
-            {persona.experience.map((exp, i) => (
-              <div class="relative flex flex-col md:flex-row gap-8">
-                <!-- Timeline dot -->
-                <div class="absolute left-0 md:left-1/2 w-4 h-4 rounded-full bg-[#f626af] transform -translate-x-[6px] md:-translate-x-[7px] mt-6 glow-card"></div>
-
-                <!-- Content -->
-                <div class={`flex-1 ml-8 md:ml-0 ${i % 2 !== 0 ? 'md:pr-12 md:text-right' : 'md:pl-12'}`}>
-                  <div class="card p-6 glow-card">
-                    <div class="relative">
-                      <span class="text-[#f626af] text-sm font-medium">{exp.period}</span>
-                      <h3 class="text-xl font-bold text-white mt-2">{exp.role}</h3>
-                      <div class="text-[#16f2b3] mt-1">{exp.company}</div>
-                      <p class="text-[#99a1af] mt-3 leading-relaxed">{exp.description}</p>
-                    </div>
-                  </div>
+        <div class="glow-card">
+          <div class="card p-6 md:p-8">
+            {persona.experience.map((exp) => (
+              <div>
+                <div class="flex flex-col md:flex-row md:items-center gap-2 md:gap-6 mb-4">
+                  <span class="text-[#f626af] text-sm font-medium">{exp.period}</span>
+                  <div class="h-[1px] flex-1 bg-[#2a2e5a]/50 hidden md:block"></div>
                 </div>
-
-                <!-- Spacer for opposite side -->
-                <div class="hidden md:block flex-1"></div>
+                <h3 class="text-xl md:text-2xl font-bold text-white">{exp.role}</h3>
+                <div class="text-[#16f2b3] mt-1">{exp.company}</div>
+                <p class="text-[#99a1af] mt-4 leading-relaxed">{exp.description}</p>
               </div>
             ))}
           </div>
@@ -311,33 +335,55 @@ const icons: Record<string, string> = {
 
     <!-- Projects Section -->
     <section id="projects" class="py-20 px-6">
-      <div class="max-w-5xl mx-auto">
+      <div class="max-w-4xl mx-auto">
         <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-4">PROJECTS</h2>
         <p class="text-[#99a1af] text-center mb-12">Things I've built</p>
 
-        <div class="grid md:grid-cols-2 gap-6">
-          {persona.projects.map((project, i) => (
+        <div class="space-y-8">
+          {persona.projects.map((project) => (
             <div class="glow-card">
-              <div class="card p-6 h-full relative flex flex-col">
-                <div class="flex items-start justify-between mb-3">
-                  <h3 class="text-xl font-bold text-white">{project.name}</h3>
+              <div class="card p-6 md:p-8">
+                <!-- Header -->
+                <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-4">
+                  <div>
+                    <h3 class="text-xl md:text-2xl font-bold text-white">{project.name}</h3>
+                    <p class="text-[#16f2b3] text-sm mt-1">{project.tag}</p>
+                  </div>
                   <a
                     href={project.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="text-[#f626af] hover:text-[#16f2b3] transition-colors flex items-center gap-1 text-sm"
+                    class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#f626af]/10 text-[#f626af] text-sm hover:bg-[#f626af]/20 transition-colors shrink-0"
                   >
-                    <span set:html={icons.externalLink} />
+                    <span class="w-4 h-4" set:html={icons.externalLink} />
+                    Live Demo
                   </a>
                 </div>
-                <span class="inline-block px-3 py-1 bg-[#f626af]/10 text-[#f626af] text-xs rounded-full w-fit mb-3">
-                  {project.tech}
-                </span>
-                <p class="text-[#99a1af] flex-1 leading-relaxed">{project.description}</p>
-                <p class="text-[#16f2b3] text-sm mt-4 flex items-center gap-2">
-                  <span set:html={icons.arrow} />
+
+                <!-- Tech Tags -->
+                <div class="flex flex-wrap gap-2 mb-5">
+                  {project.tech.map((t) => (
+                    <span class="px-2.5 py-1 bg-[#8228ec]/10 text-[#d3d8e8] text-xs rounded-md border border-[#8228ec]/20">
+                      {t}
+                    </span>
+                  ))}
+                </div>
+
+                <!-- Bullet Points -->
+                <ul class="space-y-2.5">
+                  {project.bullets.map((bullet) => (
+                    <li class="flex items-start gap-3 text-[#99a1af] text-sm leading-relaxed">
+                      <span class="w-1.5 h-1.5 rounded-full bg-[#f626af] mt-2 shrink-0" />
+                      <span>{bullet}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <!-- Highlight -->
+                <div class="mt-5 pt-4 border-t border-[#2a2e5a]/50 flex items-center gap-2 text-[#16f2b3] text-sm">
+                  <span class="w-4 h-4" set:html={icons.arrow} />
                   {project.highlight}
-                </p>
+                </div>
               </div>
             </div>
           ))}
@@ -346,7 +392,7 @@ const icons: Record<string, string> = {
     </section>
 
     <!-- Contact Section -->
-    <section id="contact" class="py-20 px-6 bg-[#050816]/50 relative">
+    <section id="contact" class="py-20 px-6 relative">
       <div class="absolute inset-0 overflow-hidden pointer-events-none">
         <div class="bg-orb bg-orb-pink w-[300px] h-[300px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-10"></div>
       </div>
@@ -359,7 +405,7 @@ const icons: Record<string, string> = {
         </p>
 
         <a
-          href="mailto:your@email.com"
+          href="mailto:kaiwen.yao.ie@gmail.com"
           class="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-[#f626af] to-[#8228ec] text-white font-semibold rounded-xl hover:shadow-lg hover:shadow-[#f626af]/30 transition-all duration-300 hover:scale-105"
         >
           <span set:html={icons.mail} />
