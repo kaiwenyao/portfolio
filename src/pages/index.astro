@@ -51,22 +51,45 @@ const persona = {
   projects: [
     {
       name: "Firmament Take-Out",
-      tech: "Spring Boot 3 · React 19 · TypeScript · MySQL · Redis · Docker",
-      description: "Full-stack food delivery platform with separate admin and user-facing frontends. Backend RESTful API with Spring Boot 3, MyBatis Plus, and MySQL covering employee, category, dish, combo meal, order, shopping cart, and address modules. JWT + Refresh Token authentication with automatic renewal and BCrypt password hashing. Redis for shop status caching and Spring Cache with custom JSON serialisation. Admin dashboard with React 19, shadcn/ui, WebSocket real-time order notifications, and ECharts data visualisation. Mobile frontend with React 19 and antd-mobile with route-level lazy loading. Jenkins CI/CD pipeline with automated testing and Docker deployment.",
+      tag: "Full-Stack Food Delivery Platform",
+      tech: ["Spring Boot 3", "React 19", "TypeScript", "MySQL", "Redis", "Docker"],
+      bullets: [
+        "Built a full-stack food delivery system with separate admin and user-facing frontends using a decoupled architecture",
+        "Developed the backend RESTful API with Spring Boot 3, MyBatis Plus, and MySQL, covering employee, category, dish, combo meal, order, shopping cart, and address modules",
+        "Implemented JWT + Refresh Token authentication with automatic renewal; migrated password hashing from MD5 to BCrypt with backward-compatible verification",
+        "Integrated Redis for shop status caching and Spring Cache with custom JSON serialisation to preserve type information during deserialisation",
+        "Built the admin dashboard with React 19, shadcn/ui, real-time order notifications via WebSocket, and data visualisation with ECharts",
+        "Built the mobile user frontend with React 19 and antd-mobile; implemented route-level lazy loading for optimised bundle splitting",
+        "Set up a Jenkins CI/CD pipeline with automated testing, Docker image builds, and production deployment"
+      ],
       url: "https://firmament-admin.kaiwen.dev/",
       highlight: "Live admin dashboard with real-time order notifications"
     },
     {
       name: "Dublin Bikes Assistant",
-      tech: "Python/Flask · React 19 · TypeScript · MySQL · scikit-learn · LangChain",
-      description: "Full-stack bike-sharing intelligence platform with Python/Flask REST API, React 19 + TypeScript SPA, and an autonomous scraper daemon polling the JCDecaux API every 5 minutes to populate a shared MySQL time-series database. Trained a Random Forest model (scikit-learn) on historical data to forecast station bike counts up to 48 hours ahead. Integrated LangChain with Alibaba Qwen for an AI chat assistant with full conversation history, streaming responses via Server-Sent Events (SSE). JWT dual-token authentication with token-version invalidation and email verification with rate-limited 6-digit codes. Interactive Google Maps with Recharts availability history and optimal bike route planner using the Google Maps Distance Matrix API.",
+      tag: "Real-Time Bike-Sharing Intelligence Platform",
+      tech: ["Python/Flask", "React 19", "TypeScript", "MySQL", "scikit-learn", "LangChain"],
+      bullets: [
+        "Built a full-stack bike-sharing platform with a Python/Flask REST API, React 19 + TypeScript SPA, and an autonomous scraper daemon polling the JCDecaux API every 5 minutes",
+        "Trained a Random Forest model (scikit-learn) on historical availability data to forecast station bike counts up to 48 hours ahead, with the model pre-loaded at server start for low-latency prediction endpoints",
+        "Integrated LangChain with Alibaba Qwen to power an AI chat assistant with full conversation history, streaming responses to the browser via Server-Sent Events (SSE)",
+        "Implemented JWT dual-token authentication with token-version invalidation for instant logout, and an email verification flow with rate-limited 6-digit codes",
+        "Designed an interactive map with Google Maps for real-time station markers and availability history charts (Recharts); implemented an optimal bike route planner using the Google Maps Distance Matrix API"
+      ],
       url: "https://bikes.kaiwen.dev",
       highlight: "AI-powered bike availability forecasting and route planning"
     },
     {
       name: "UCDHub",
-      tech: "Python/FastAPI · React 18 · MySQL · Redis · SQLAlchemy 2.0",
-      description: "Campus community platform for UCD international students with structured course reviews, a secondary marketplace, and rental listings. Async REST API with SQLAlchemy 2.0 supporting multi-dimensional course ranking across 6,000+ records, with rate-limiting middleware and paginated endpoints. Points and membership system featuring daily check-in rewards and point-based redemption (50 points → 1-day premium), gating extended review access. Dual-channel email verification (6-digit code and tokenised link) with Redis-backed JWT token blacklisting. Automated containerised deployment via Jenkins and Docker.",
+      tag: "Campus Community Platform for UCD Students",
+      tech: ["Python/FastAPI", "React 18", "MySQL", "Redis", "SQLAlchemy 2.0"],
+      bullets: [
+        "Developed a production campus platform serving UCD international students with structured course reviews, a secondary marketplace, and rental listings",
+        "Designed an async REST API with SQLAlchemy 2.0 supporting multi-dimensional course ranking across 6,000+ records, with rate-limiting middleware and paginated endpoints",
+        "Implemented a points and membership system featuring daily check-in rewards and point-based redemption (50 points → 1-day premium), gating extended review access to drive user engagement",
+        "Integrated dual-channel email verification (6-digit code and tokenised link) with Redis-backed JWT token blacklisting, securing the authentication layer end-to-end",
+        "Automated containerised deployment via Jenkins and Docker, covering build, test, and production rollout as sole developer"
+      ],
       url: "https://ucd-hub.com/",
       highlight: "Production platform serving UCD international students"
     }
@@ -75,7 +98,7 @@ const persona = {
 
 const navItems = [
   { name: "ABOUT", href: "#about" },
-  { name: "EXPERIENCE", href: "#experience" },
+  { name: "INTERNSHIP", href: "#internship" },
   { name: "SKILLS", href: "#skills" },
   { name: "EDUCATION", href: "#education" },
   { name: "PROJECTS", href: "#projects" },
@@ -259,11 +282,11 @@ const icons: Record<string, string> = {
       <div class="section-divider mt-16 max-w-4xl mx-auto"></div>
     </section>
 
-    <!-- Experience Section -->
-    <section id="experience" class="py-20 px-6">
+    <!-- Internship Section -->
+    <section id="internship" class="py-20 px-6">
       <div class="max-w-4xl mx-auto">
-        <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-4">EXPERIENCE</h2>
-        <p class="text-[#99a1af] text-center mb-12">My professional journey</p>
+        <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-4">INTERNSHIP</h2>
+        <p class="text-[#99a1af] text-center mb-12">My internship experience</p>
 
         <div class="relative">
           <!-- Timeline line -->
@@ -325,33 +348,55 @@ const icons: Record<string, string> = {
 
     <!-- Projects Section -->
     <section id="projects" class="py-20 px-6">
-      <div class="max-w-5xl mx-auto">
+      <div class="max-w-4xl mx-auto">
         <h2 class="text-3xl md:text-4xl font-bold text-white text-center mb-4">PROJECTS</h2>
         <p class="text-[#99a1af] text-center mb-12">Things I've built</p>
 
-        <div class="grid md:grid-cols-2 gap-6">
-          {persona.projects.map((project, i) => (
+        <div class="space-y-8">
+          {persona.projects.map((project) => (
             <div class="glow-card">
-              <div class="card p-6 h-full relative flex flex-col">
-                <div class="flex items-start justify-between mb-3">
-                  <h3 class="text-xl font-bold text-white">{project.name}</h3>
+              <div class="card p-6 md:p-8">
+                <!-- Header -->
+                <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-4">
+                  <div>
+                    <h3 class="text-xl md:text-2xl font-bold text-white">{project.name}</h3>
+                    <p class="text-[#16f2b3] text-sm mt-1">{project.tag}</p>
+                  </div>
                   <a
                     href={project.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="text-[#f626af] hover:text-[#16f2b3] transition-colors flex items-center gap-1 text-sm"
+                    class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#f626af]/10 text-[#f626af] text-sm hover:bg-[#f626af]/20 transition-colors shrink-0"
                   >
-                    <span set:html={icons.externalLink} />
+                    <span class="w-4 h-4" set:html={icons.externalLink} />
+                    Live Demo
                   </a>
                 </div>
-                <span class="inline-block px-3 py-1 bg-[#f626af]/10 text-[#f626af] text-xs rounded-full w-fit mb-3">
-                  {project.tech}
-                </span>
-                <p class="text-[#99a1af] flex-1 leading-relaxed">{project.description}</p>
-                <p class="text-[#16f2b3] text-sm mt-4 flex items-center gap-2">
-                  <span set:html={icons.arrow} />
+
+                <!-- Tech Tags -->
+                <div class="flex flex-wrap gap-2 mb-5">
+                  {project.tech.map((t) => (
+                    <span class="px-2.5 py-1 bg-[#8228ec]/10 text-[#d3d8e8] text-xs rounded-md border border-[#8228ec]/20">
+                      {t}
+                    </span>
+                  ))}
+                </div>
+
+                <!-- Bullet Points -->
+                <ul class="space-y-2.5">
+                  {project.bullets.map((bullet) => (
+                    <li class="flex items-start gap-3 text-[#99a1af] text-sm leading-relaxed">
+                      <span class="w-1.5 h-1.5 rounded-full bg-[#f626af] mt-2 shrink-0" />
+                      <span>{bullet}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <!-- Highlight -->
+                <div class="mt-5 pt-4 border-t border-[#2a2e5a]/50 flex items-center gap-2 text-[#16f2b3] text-sm">
+                  <span class="w-4 h-4" set:html={icons.arrow} />
                   {project.highlight}
-                </p>
+                </div>
               </div>
             </div>
           ))}
