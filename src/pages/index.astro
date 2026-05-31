@@ -3,8 +3,8 @@ import Layout from '../layouts/Layout.astro';
 
 const persona = {
   name: "Kaiwen Yao",
-  title: "Software Engineer / Full Stack Developer",
-  intro: "M.S. Computer Science student at University College Dublin with a strong foundation in full-stack development. Experienced in building production-grade applications using Spring Boot, React, Python/FastAPI, and Go. Passionate about creating elegant solutions, from AI-powered platforms to real-time systems. Always eager to learn and tackle new challenges.",
+  title: "MSc Computer Science Student / Backend & Full-Stack Developer",
+  intro: "First-year MSc Computer Science student at University College Dublin with an engineering background from Beihang University. I build production-style backend and full-stack applications with Java, Spring Boot, Go, FastAPI, React, TypeScript, MySQL, PostgreSQL, Redis, Docker, and Jenkins, with a focus on reliable systems, clear APIs, and AI-enabled software products.",
   skills: [
     { name: "Java", icon: "java" },
     { name: "TypeScript", icon: "typescript" },
@@ -45,22 +45,24 @@ const persona = {
       period: "Mar 2026 - Apr 2026",
       role: "Lead Backend Developer",
       company: "TrueMoment — Snowfall Ltd (Remote)",
-      description: "Built the entire API service for an Instagram-style social app with dual-camera photo sharing using Go, Gin, GORM, and MySQL. Implemented 9 production modules with layered Handler→Service→Repo architecture, JWT authentication with Redis-backed logout token blacklisting, SMS verification, Aliyun OSS image upload with CDN delivery, cursor-paginated feed endpoints, and a notification system triggered on like/comment/follow events. Wrote unit and integration tests with testcontainers-go. Configured Alibaba Cloud Yunxiao (Flow) CI/CD pipeline with ACR container deployment."
+      bullets: [
+        "Led backend development for a dual-camera social app, building the Go API with Gin, GORM, MySQL, and Redis in a layered Handler to Service to Repo architecture.",
+        "Delivered core social modules covering SMS/JWT auth, Aliyun OSS image upload, posts, cursor-paginated feeds, likes, comments, follows, notifications, and search.",
+        "Designed security and data workflows including Redis-backed logout token blacklisting, automatic SQL migrations, CDN-backed media URLs, and event-driven notifications.",
+        "Built unit and integration test coverage with Go testing and testcontainers-go, plus Docker packaging and Alibaba Cloud Yunxiao CI/CD."
+      ]
     }
   ],
   projects: [
     {
       name: "Firmament Take-Out",
       tag: "Full-Stack Food Delivery Platform",
-      tech: ["Spring Boot 3", "React 19", "TypeScript", "MySQL", "Redis", "Docker"],
+      tech: ["Spring Boot 3", "React 19", "TypeScript", "MyBatis Plus", "MySQL", "Redis", "Docker"],
       bullets: [
-        "Built a full-stack food delivery system with separate admin and user-facing frontends using a decoupled architecture",
-        "Developed the backend RESTful API with Spring Boot 3, MyBatis Plus, and MySQL, covering employee, category, dish, combo meal, order, shopping cart, and address modules",
-        "Implemented JWT + Refresh Token authentication with automatic renewal; migrated password hashing from MD5 to BCrypt with backward-compatible verification",
-        "Integrated Redis for shop status caching and Spring Cache with custom JSON serialisation to preserve type information during deserialisation",
-        "Built the admin dashboard with React 19, shadcn/ui, real-time order notifications via WebSocket, and data visualisation with ECharts",
-        "Built the mobile user frontend with React 19 and antd-mobile; implemented route-level lazy loading for optimised bundle splitting",
-        "Set up a Jenkins CI/CD pipeline with automated testing, Docker image builds, and production deployment"
+        "Built a production food delivery system spanning a Spring Boot backend, React admin dashboard, and mobile user app for menu, cart, address, order, employee, dish, and set-meal workflows.",
+        "Implemented REST APIs with MyBatis Plus, MySQL, MapStruct, and Redis/Spring Cache, including custom JSON serialisation for type-safe cache deserialisation.",
+        "Delivered JWT + Refresh Token auth, BCrypt password migration, WebSocket order notifications, scheduled order timeout handling, and ECharts sales analytics.",
+        "Automated build, test, Docker image publishing, nginx frontend serving, and production rollout through Jenkins CI/CD pipelines."
       ],
       url: "https://firmament-admin.kaiwen.dev/",
       highlight: "Live admin dashboard with real-time order notifications"
@@ -68,13 +70,12 @@ const persona = {
     {
       name: "Dublin Bikes Assistant",
       tag: "Real-Time Bike-Sharing Intelligence Platform",
-      tech: ["Python/Flask", "React 19", "TypeScript", "MySQL", "scikit-learn", "LangChain"],
+      tech: ["Spring Boot 3.5", "Java 21", "React 19", "PostgreSQL", "FastAPI", "scikit-learn", "LangChain"],
       bullets: [
-        "Built a full-stack bike-sharing platform with a Python/Flask REST API, React 19 + TypeScript SPA, and an autonomous scraper daemon polling the JCDecaux API every 5 minutes",
-        "Trained a Random Forest model (scikit-learn) on historical availability data to forecast station bike counts up to 48 hours ahead, with the model pre-loaded at server start for low-latency prediction endpoints",
-        "Integrated LangChain with Alibaba Qwen to power an AI chat assistant with full conversation history, streaming responses to the browser via Server-Sent Events (SSE)",
-        "Implemented JWT dual-token authentication with token-version invalidation for instant logout, and an email verification flow with rate-limited 6-digit codes",
-        "Designed an interactive map with Google Maps for real-time station markers and availability history charts (Recharts); implemented an optimal bike route planner using the Google Maps Distance Matrix API"
+        "Architected a bike-sharing intelligence platform with a Spring Boot 3.5 gateway, React + TypeScript SPA, PostgreSQL + JPA + Flyway, Python scraper, and FastAPI microservices.",
+        "Built the JCDecaux/weather data pipeline for live station maps, availability history charts, and hourly scikit-learn bike-availability forecasts.",
+        "Implemented a Google Maps journey planner using Geocoding and Distance Matrix APIs to minimise Walk to Cycle to Walk duration over a 5 x 5 station candidate search.",
+        "Integrated LangChain + DeepSeek chat with Spring-managed session ACLs, PostgreSQL conversation history, SSE streaming, and JWT access/refresh authentication."
       ],
       url: "https://bikes.kaiwen.dev",
       highlight: "AI-powered bike availability forecasting and route planning"
@@ -84,11 +85,10 @@ const persona = {
       tag: "Campus Community Platform for UCD Students",
       tech: ["Python/FastAPI", "React 18", "MySQL", "Redis", "SQLAlchemy 2.0"],
       bullets: [
-        "Developed a production campus platform serving UCD international students with structured course reviews, a secondary marketplace, and rental listings",
-        "Designed an async REST API with SQLAlchemy 2.0 supporting multi-dimensional course ranking across 6,000+ records, with rate-limiting middleware and paginated endpoints",
-        "Implemented a points and membership system featuring daily check-in rewards and point-based redemption (50 points → 1-day premium), gating extended review access to drive user engagement",
-        "Integrated dual-channel email verification (6-digit code and tokenised link) with Redis-backed JWT token blacklisting, securing the authentication layer end-to-end",
-        "Automated containerised deployment via Jenkins and Docker, covering build, test, and production rollout as sole developer"
+        "Built a campus community platform for course reviews, rankings, second-hand listings, rentals, and user profiles using FastAPI, async SQLAlchemy 2.0, MySQL, Redis, and React.",
+        "Seeded 6,131 UCD modules and demo content; designed searchable, paginated course APIs with multi-dimensional rankings, review voting, and personal content management.",
+        "Implemented daily check-ins, review rewards, point history, 50 points to 1-day premium redemption, and premium-gated full review access.",
+        "Hardened authentication with email code/link verification, rotating JWT refresh tokens, Redis token blacklisting, login throttling, account lockout, and frontend refresh-request queuing."
       ],
       url: "https://ucd-hub.com/",
       highlight: "Production platform serving UCD international students"
@@ -98,8 +98,8 @@ const persona = {
 
 const navItems = [
   { name: "ABOUT", href: "#about" },
-  { name: "INTERNSHIP", href: "#internship" },
   { name: "SKILLS", href: "#skills" },
+  { name: "INTERNSHIP", href: "#internship" },
   { name: "EDUCATION", href: "#education" },
   { name: "PROJECTS", href: "#projects" },
   { name: "CONTACT", href: "#contact" },
@@ -172,7 +172,7 @@ const icons: Record<string, string> = {
       <div class="max-w-7xl mx-auto w-full">
         <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           <!-- Left: Personal Info -->
-          <div class="stagger-children order-2 lg:order-1">
+          <div class="stagger-children order-1">
             <p class="text-[#f626af] text-sm tracking-[0.3em] mb-6 uppercase">Welcome to my portfolio</p>
             <h1 class="text-5xl md:text-6xl lg:text-7xl font-extrabold text-white mb-6 leading-[1.1]">
               Hello, I'm<br />
@@ -199,8 +199,8 @@ const icons: Record<string, string> = {
           </div>
 
           <!-- Right: Code Window -->
-          <div class="order-1 lg:order-2 flex lg:justify-start lg:ml-12">
-            <div class="w-full min-w-[700px] max-w-3xl">
+          <div class="order-2 flex lg:justify-start lg:ml-12 min-w-0">
+            <div class="w-full max-w-3xl min-w-0">
               <!-- macOS Window Frame -->
               <div class="bg-[#1e1e2e] rounded-xl overflow-hidden shadow-2xl shadow-[#f626af]/10 border border-[#313244]">
                 <!-- Title Bar -->
@@ -215,17 +215,16 @@ const icons: Record<string, string> = {
                   <div class="space-y-1 leading-tight">
                     <div><span class="text-[#cba6f7]">const</span> <span class="text-[#89dceb]">coder</span> <span class="text-[#cdd6f4]">=</span> <span class="text-[#cdd6f4]">{</span></div>
                     <div class="pl-6"><span class="text-[#89b4fa]">name</span><span class="text-[#cdd6f4]">:</span> <span class="text-[#a6e3a1]">'Kaiwen Yao'</span><span class="text-[#cdd6f4]">,</span></div>
-                    <div class="pl-6"><span class="text-[#89b4fa]">skills</span><span class="text-[#cdd6f4]">:</span> <span class="text-[#f9e2af]">['C++'</span><span class="text-[#cdd6f4]">,</span> <span class="text-[#a6e3a1]">'NextJS'</span><span class="text-[#cdd6f4]">,</span> <span class="text-[#a6e3a1]">'Vue'</span><span class="text-[#cdd6f4]">,</span> <span class="text-[#a6e3a1]">'Python'</span><span class="text-[#cdd6f4]">,</span> <span class="text-[#a6e3a1]">'TypeScript'</span><span class="text-[#cdd6f4]">,</span></div>
-                    <div class="pl-10"><span class="text-[#a6e3a1]">'MySQL'</span><span class="text-[#cdd6f4]">,</span> <span class="text-[#a6e3a1]">'MongoDB'</span><span class="text-[#cdd6f4]">,</span> <span class="text-[#a6e3a1]">'Docker'</span><span class="text-[#cdd6f4]">,</span> <span class="text-[#a6e3a1]">'AWS'</span><span class="text-[#cdd6f4]">],</span></div>
-                    <div class="pl-6"><span class="text-[#89b4fa]">hardWorker</span><span class="text-[#cdd6f4]">:</span> <span class="text-[#f9e2af]">true</span><span class="text-[#cdd6f4]">,</span></div>
-                    <div class="pl-6"><span class="text-[#89b4fa]">quickLearner</span><span class="text-[#cdd6f4]">:</span> <span class="text-[#f9e2af]">true</span><span class="text-[#cdd6f4]">,</span></div>
-                    <div class="pl-6"><span class="text-[#89b4fa]">problemSolver</span><span class="text-[#cdd6f4]">:</span> <span class="text-[#f9e2af]">true</span><span class="text-[#cdd6f4]">,</span></div>
-                    <div class="pl-6"><span class="text-[#89b4fa]">hireable</span><span class="text-[#cdd6f4]">:</span> <span class="text-[#cdd6f4]">()</span> <span class="text-[#cdd6f4]">=></span> <span class="text-[#cdd6f4]">{</span></div>
+                    <div class="pl-6"><span class="text-[#89b4fa]">focus</span><span class="text-[#cdd6f4]">:</span> <span class="text-[#a6e3a1]">'Backend & full-stack systems'</span><span class="text-[#cdd6f4]">,</span></div>
+                    <div class="pl-6"><span class="text-[#89b4fa]">stack</span><span class="text-[#cdd6f4]">:</span> <span class="text-[#f9e2af]">['Java'</span><span class="text-[#cdd6f4]">,</span> <span class="text-[#a6e3a1]">'Spring Boot'</span><span class="text-[#cdd6f4]">,</span> <span class="text-[#a6e3a1]">'Go'</span><span class="text-[#cdd6f4]">,</span> <span class="text-[#a6e3a1]">'FastAPI'</span><span class="text-[#cdd6f4]">,</span></div>
+                    <div class="pl-10"><span class="text-[#a6e3a1]">'React'</span><span class="text-[#cdd6f4]">,</span> <span class="text-[#a6e3a1]">'TypeScript'</span><span class="text-[#cdd6f4]">,</span> <span class="text-[#a6e3a1]">'PostgreSQL'</span><span class="text-[#cdd6f4]">,</span> <span class="text-[#a6e3a1]">'Docker'</span><span class="text-[#cdd6f4]">],</span></div>
+                    <div class="pl-6"><span class="text-[#89b4fa]">building</span><span class="text-[#cdd6f4]">:</span> <span class="text-[#a6e3a1]">'Reliable APIs, data products, AI features'</span><span class="text-[#cdd6f4]">,</span></div>
+                    <div class="pl-6"><span class="text-[#89b4fa]">availableFor</span><span class="text-[#cdd6f4]">:</span> <span class="text-[#cdd6f4]">()</span> <span class="text-[#cdd6f4]">=></span> <span class="text-[#cdd6f4]">{</span></div>
                     <div class="pl-8"><span class="text-[#f9e2af]">return</span></div>
                     <div class="pl-10"><span class="text-[#cdd6f4]">(</span></div>
-                    <div class="pl-10"><span class="text-[#cdd6f4]">this</span><span class="text-[#89b4fa]">.hardWorker</span></div>
-                    <div class="pl-10"><span class="text-[#f9e2af]">&&</span> <span class="text-[#cdd6f4]">this</span><span class="text-[#89b4fa]">.problemSolver</span></div>
-                    <div class="pl-10"><span class="text-[#f9e2af]">&&</span> <span class="text-[#cdd6f4]">this</span><span class="text-[#89b4fa]">.skills</span><span class="text-[#f9e2af]">.length</span><span class="text-[#f9e2af]">>=</span><span class="text-[#fab387]">5</span></div>
+                    <div class="pl-10"><span class="text-[#a6e3a1]">'Backend Engineering'</span></div>
+                    <div class="pl-10"><span class="text-[#f9e2af]">||</span> <span class="text-[#a6e3a1]">'Full-Stack Development'</span></div>
+                    <div class="pl-10"><span class="text-[#f9e2af]">||</span> <span class="text-[#a6e3a1]">'AI-enabled Products'</span></div>
                     <div class="pl-10"><span class="text-[#cdd6f4]">);</span></div>
                     <div class="pl-8"><span class="text-[#cdd6f4]">}</span></div>
                     <div><span class="text-[#cdd6f4]">};</span></div>
@@ -298,7 +297,14 @@ const icons: Record<string, string> = {
                 </div>
                 <h3 class="text-xl md:text-2xl font-bold text-white">{exp.role}</h3>
                 <div class="text-[#16f2b3] mt-1">{exp.company}</div>
-                <p class="text-[#99a1af] mt-4 leading-relaxed">{exp.description}</p>
+                <ul class="space-y-2.5 mt-5">
+                  {exp.bullets.map((bullet) => (
+                    <li class="flex items-start gap-3 text-[#99a1af] text-sm leading-relaxed">
+                      <span class="w-1.5 h-1.5 rounded-full bg-[#16f2b3] mt-2 shrink-0" />
+                      <span>{bullet}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
             ))}
           </div>
