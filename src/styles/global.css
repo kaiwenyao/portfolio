@@ -113,6 +113,13 @@ body {
   pointer-events: none;
 }
 
+/* Smaller blur radius on phones — 80px blur is expensive on mobile GPUs */
+@media (max-width: 640px) {
+  .bg-orb {
+    filter: blur(60px);
+  }
+}
+
 .bg-orb-pink {
   background: var(--color-pink);
 }
