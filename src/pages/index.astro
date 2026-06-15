@@ -57,41 +57,41 @@ const persona = {
     {
       name: "Firmament Take-Out",
       tag: "Full-Stack Food Delivery Platform",
-      tech: ["Spring Boot 3", "React 19", "TypeScript", "MyBatis Plus", "MySQL", "Redis", "Docker"],
+      period: "2025",
+      tech: ["React 19", "TypeScript", "Spring Boot 3", "MyBatis Plus", "MySQL", "WebSocket", "Redis", "Jenkins"],
       bullets: [
-        "Built a production food delivery system spanning a Spring Boot backend, React admin dashboard, and mobile user app for menu, cart, address, order, employee, dish, and set-meal workflows.",
-        "Implemented REST APIs with MyBatis Plus, MySQL, MapStruct, and Redis/Spring Cache, including custom JSON serialisation for type-safe cache deserialisation.",
-        "Delivered JWT + Refresh Token auth, BCrypt password migration, WebSocket order notifications, scheduled order timeout handling, and ECharts sales analytics.",
-        "Automated build, test, Docker image publishing, nginx frontend serving, and production rollout through Jenkins CI/CD pipelines."
+        "Built an end-to-end food-delivery platform to replace fragmented hand-offs between customers and restaurant staff, unifying menu discovery, checkout, tracking, fulfilment, and reporting. Customers receive transparent order progress while staff manage one consistent operational workflow.",
+        "Architected separate React 19 + TypeScript mobile and admin SPAs around a modular Spring Boot 3 / MyBatis Plus / MySQL service with distinct customer and staff access paths. Used WebSocket order updates; Redis cache hits reduced average latency by 57.6% across 10,000 requests.",
+        "Engineered transaction-safe ordering with server-side total validation, atomic order and line-item persistence, controlled state transitions, and scheduled cancellation of unpaid orders. Reviewed AI-drafted JUnit edge cases before adding the validated suite to Jenkins regression testing."
       ],
       url: "https://firmament-admin.kaiwen.dev/",
-      highlight: "Live admin dashboard with real-time order notifications"
+      highlight: "57.6% lower average latency across 10,000 requests"
     },
     {
       name: "Dublin Bikes Assistant",
       tag: "Real-Time Bike-Sharing Intelligence Platform",
-      tech: ["Spring Boot 3.5", "Java 21", "React 19", "PostgreSQL", "FastAPI", "scikit-learn", "LangChain"],
+      period: "2025 - 2026",
+      tech: ["React", "TypeScript", "Spring Boot", "Java 21", "PostgreSQL", "JPA", "Flyway", "FastAPI", "scikit-learn", "LangChain"],
       bullets: [
-        "Architected a bike-sharing intelligence platform with a Spring Boot 3.5 gateway, React + TypeScript SPA, PostgreSQL + JPA + Flyway, Python scraper, and FastAPI microservices.",
-        "Built the JCDecaux/weather data pipeline for live station maps, availability history charts, and hourly scikit-learn bike-availability forecasts.",
-        "Implemented a Google Maps journey planner using Geocoding and Distance Matrix APIs to minimise Walk to Cycle to Walk duration over a 5 x 5 station candidate search.",
-        "Integrated LangChain + DeepSeek chat with Spring-managed session ACLs, PostgreSQL conversation history, SSE streaming, and JWT access/refresh authentication."
+        "Built a real-time mobility platform to reduce uncertainty when bikes or docking spaces become unavailable. It combines live conditions, historical trends, hourly forecasts, route guidance, and personalised assistance to support faster, more reliable travel decisions.",
+        "Designed a service-oriented architecture spanning a React + TypeScript SPA, Spring Boot / Java 21 gateway, PostgreSQL / JPA / Flyway persistence, Python ingestion, and FastAPI prediction and chat services. The gateway centralises authentication, business rules, session ACLs, and internal-service access.",
+        "Implemented a journey optimiser that filters fresh station availability, ranks nearby candidates, and uses Google Maps routing to minimise combined walking and cycling time. Integrated hourly scikit-learn forecasts and a secured LangChain + DeepSeek assistant with streamed responses and persistent history."
       ],
       url: "https://bikes.kaiwen.dev",
-      highlight: "AI-powered bike availability forecasting and route planning"
+      highlight: "Live conditions, hourly forecasts, optimised routes, and AI assistance"
     },
     {
       name: "UCDHub",
       tag: "Campus Community Platform for UCD Students",
-      tech: ["Python/FastAPI", "React 18", "MySQL", "Redis", "SQLAlchemy 2.0"],
+      period: "2025 - 2026",
+      tech: ["React", "TypeScript", "FastAPI", "SQLAlchemy 2.0", "Redis", "JWT"],
       bullets: [
-        "Built a campus community platform for course reviews, rankings, second-hand listings, rentals, and user profiles using FastAPI, async SQLAlchemy 2.0, MySQL, Redis, and React.",
-        "Seeded 6,131 UCD modules and demo content; designed searchable, paginated course APIs with multi-dimensional rankings, review voting, and personal content management.",
-        "Implemented daily check-ins, review rewards, point history, 50 points to 1-day premium redemption, and premium-gated full review access.",
-        "Hardened authentication with email code/link verification, rotating JWT refresh tokens, Redis token blacklisting, login throttling, account lockout, and frontend refresh-request queuing."
+        "Built a bilingual campus community to bring UCD course reviews, rankings, second-hand listings, and rentals from disconnected channels into one searchable platform. It reduces the effort required to compare courses and discover trusted student information.",
+        "Structured 6,000+ course records into a searchable catalogue with reviews and multi-dimensional rankings, backed by a React + TypeScript SPA and async FastAPI / SQLAlchemy 2.0 API. Kept discovery responsive through pagination and Redis-backed caching.",
+        "Designed a contribution-driven points and membership model that rewards check-ins and reviews while unlocking broader content access. Secured user-generated content through UCD email verification, rotating JWTs, Redis-backed revocation, rate limiting, and ownership checks."
       ],
       url: "https://ucd-hub.com/",
-      highlight: "Production platform serving UCD international students"
+      highlight: "Searchable bilingual community with 6,000+ UCD course records"
     }
   ]
 };
@@ -323,6 +323,7 @@ const icons: Record<string, string> = {
                   <div>
                     <h3 class="text-xl md:text-2xl font-bold text-white">{project.name}</h3>
                     <p class="text-[#16f2b3] text-sm mt-1">{project.tag}</p>
+                    <p class="text-[#99a1af] text-xs mt-1">{project.period}</p>
                   </div>
                   <a
                     href={project.url}
