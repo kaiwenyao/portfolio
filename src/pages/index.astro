@@ -573,11 +573,18 @@ const icons: Record<string, string> = {
 
     marquee.addEventListener('pointermove', (e) => {
       if (!mouseDragging) return;
-      marquee.scrollLeft = startScrollLeft - (e.clientX - startX);
-      // Keep the drag infinite: wrap across the duplicated copy as the user
-      // drags, mirroring the auto-scroll wrap. Because startScrollLeft lives
-      // in the same modular space, the math stays consistent mid-drag.
-      wrap();
+      const half = marquee.scrollWidth / 2;
+      if (half <= 0) return;
+      // Compute the target from the current drag gesture, then modulo it into
+      // one copy's width so the drag loops endlessly. Re-base the gesture to
+      // the wrapped position every event: this keeps each per-event delta tiny
+      // (instead of growing without bound from a fixed origin), which avoids
+      // the repeat half-jumps that caused the stutter at the wrap point.
+      let target = startScrollLeft - (e.clientX - startX);
+      target = ((target % half) + half) % half;
+      marquee.scrollLeft = target;
+      startScrollLeft = target;
+      startX = e.clientX;
     });
 
     const endDrag = (e) => {
