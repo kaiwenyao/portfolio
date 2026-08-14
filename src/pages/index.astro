@@ -247,28 +247,28 @@ const icons: Record<string, string> = {
         <p class="text-[#6b6b6b] text-center">Technologies I work with</p>
       </div>
 
-      <!-- Marquee Container -->
-      <div class="relative overflow-hidden">
-        <div class="flex gap-4 animate-marquee flex-nowrap">
+      <!-- Marquee Container (auto-scrolls by default; mouse-draggable) -->
+      <div id="skills-marquee" class="marquee-scroll relative overflow-x-auto overflow-y-hidden py-2 cursor-grab">
+        <div class="flex gap-4 flex-nowrap marquee-track select-none">
           {persona.skills.map((skill) => (
-            <div class="skill-card flex flex-col items-center gap-3 px-4 py-4 md:px-5 md:py-5 bg-white border border-[#ececf1] rounded-xl min-w-[96px] md:min-w-[120px] cursor-pointer shrink-0">
+            <div class="skill-card flex flex-col items-center gap-3 px-4 py-4 md:px-5 md:py-5 bg-white border border-[#ececf1] rounded-xl min-w-[96px] md:min-w-[120px] shrink-0">
               <img
                 src={`/skills/${skill.icon}.svg`}
                 alt={skill.name}
-                class="w-12 h-12 md:w-16 md:h-16 object-contain"
+                class="w-12 h-12 md:w-16 md:h-16 object-contain pointer-events-none"
                 onerror={`this.src='/skills/${skill.icon}.png'`}
               />
               <span class="text-sm text-[#3d3d3d] font-medium">{skill.name}</span>
             </div>
           ))}
-          {/* Second copy - only for seamless loop, hidden when reduced-motion */}
-          <div class="reduced-motion-hidden flex gap-4 shrink-0">
+          {/* Second copy - for seamless loop */}
+          <div class="flex gap-4 shrink-0" aria-hidden="true">
             {persona.skills.map((skill) => (
-              <div class="skill-card flex flex-col items-center gap-3 px-4 py-4 md:px-5 md:py-5 bg-white border border-[#ececf1] rounded-xl min-w-[96px] md:min-w-[120px] cursor-pointer">
+              <div class="skill-card flex flex-col items-center gap-3 px-4 py-4 md:px-5 md:py-5 bg-white border border-[#ececf1] rounded-xl min-w-[96px] md:min-w-[120px]">
                 <img
                   src={`/skills/${skill.icon}.svg`}
                   alt={skill.name}
-                  class="w-12 h-12 md:w-16 md:h-16 object-contain"
+                  class="w-12 h-12 md:w-16 md:h-16 object-contain pointer-events-none"
                   onerror={`this.src='/skills/${skill.icon}.png'`}
                 />
                 <span class="text-sm text-[#3d3d3d] font-medium">{skill.name}</span>
@@ -449,28 +449,22 @@ const icons: Record<string, string> = {
 </Layout>
 
 <style is:global>
-  @keyframes marquee {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
+  /* Skills marquee: hide scrollbar (still scrollable via JS + drag) */
+  .marquee-scroll {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    -webkit-overflow-scrolling: touch;
   }
-
-  .animate-marquee {
-    animation: marquee 20s linear infinite;
+  .marquee-scroll::-webkit-scrollbar {
+    display: none;
   }
-
-  .animate-marquee:hover {
-    animation-play-state: paused;
+  .marquee-scroll.dragging {
+    cursor: grabbing;
   }
-
-  /* Respect reduced motion preference */
-  @media (prefers-reduced-motion: reduce) {
-    .animate-marquee {
-      animation: none;
-      overflow-x: auto;
-    }
-    .reduced-motion-hidden {
-      display: none;
-    }
+  /* Prevent native image ghost-drag interfering with mouse drag */
+  .marquee-track img {
+    -webkit-user-drag: none;
+    user-drag: none;
   }
 </style>
 
@@ -515,5 +509,82 @@ const icons: Record<string, string> = {
     revealTargets.forEach(el => {
       observer.observe(el);
     });
+  }
+
+  // Skills marquee: continuous auto-scroll by default + mouse drag-to-scroll.
+  // Both operate on scrollLeft so they never conflict; touch uses native scroll.
+  const marquee = document.getElementById('skills-marquee');
+  if (marquee) {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const speedPxPerSec = 60; // ~ matches the previous 20s linear marquee feel
+    let paused = false;            // hover-pause (mimics old hover behavior)
+    let pointerActive = false;     // any pointer down (mouse/touch/pen)
+    let mouseDragging = false;     // mouse is actively dragging
+    let pointerId = null;
+    let startX = 0;
+    let startScrollLeft = 0;
+    let lastTime = 0;
+
+    // Time-based advance so speed is constant regardless of refresh rate.
+    function frame(time) {
+      const dt = time - lastTime;
+      lastTime = time;
+      if (!paused && !pointerActive && !prefersReducedMotion && dt > 0) {
+        marquee.scrollLeft += speedPxPerSec * dt / 1000;
+        const half = marquee.scrollWidth / 2;
+        if (marquee.scrollLeft >= half) marquee.scrollLeft -= half;
+        else if (marquee.scrollLeft < 0) marquee.scrollLeft += half;
+      }
+      requestAnimationFrame(frame);
+    }
+
+    // Pause on hover (mouse) like the old hover-pause behavior
+    marquee.addEventListener('mouseenter', () => { paused = true; });
+    marquee.addEventListener('mouseleave', () => {
+      if (!mouseDragging) paused = false;
+    });
+
+    marquee.addEventListener('pointerdown', (e) => {
+      // Only primary mouse button initiates a JS drag; touch/pen use native scroll
+      if (e.pointerType === 'mouse') {
+        if (e.button !== 0) return;
+        mouseDragging = true;
+        pointerActive = true;
+        marquee.classList.add('dragging');
+        startX = e.clientX;
+        startScrollLeft = marquee.scrollLeft;
+        pointerId = e.pointerId;
+        try { marquee.setPointerCapture(e.pointerId); } catch {}
+        e.preventDefault();
+      } else {
+        // touch/pen: just pause auto-scroll while the native drag is active
+        pointerActive = true;
+      }
+    });
+
+    marquee.addEventListener('pointermove', (e) => {
+      if (!mouseDragging) return;
+      marquee.scrollLeft = startScrollLeft - (e.clientX - startX);
+    });
+
+    const endDrag = (e) => {
+      if (mouseDragging) {
+        mouseDragging = false;
+        marquee.classList.remove('dragging');
+        if (pointerId !== null) {
+          try { marquee.releasePointerCapture(pointerId); } catch {}
+          pointerId = null;
+        }
+      }
+      pointerActive = false;
+      // keep paused while the cursor still hovers the marquee (hover-pause)
+      if (!marquee.matches(':hover')) paused = false;
+    };
+    marquee.addEventListener('pointerup', endDrag);
+    marquee.addEventListener('pointercancel', endDrag);
+
+    if (!prefersReducedMotion) {
+      requestAnimationFrame(frame);
+    }
   }
 </script>
