@@ -491,21 +491,29 @@ const icons: Record<string, string> = {
   });
 
   // Intersection Observer for fade-in animations
-  const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-  };
+  const revealTargets = document.querySelectorAll('section > div');
 
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('animate-fade-in-up');
-        observer.unobserve(entry.target);
-      }
+  // Fallback: if IntersectionObserver is unavailable, reveal everything
+  // immediately so content is never stuck hidden.
+  if (!('IntersectionObserver' in window)) {
+    revealTargets.forEach(el => el.classList.add('animate-fade-in-up'));
+  } else {
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate-fade-in-up');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    revealTargets.forEach(el => {
+      observer.observe(el);
     });
-  }, observerOptions);
-
-  document.querySelectorAll('section > div').forEach(el => {
-    observer.observe(el);
-  });
+  }
 </script>

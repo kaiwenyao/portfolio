@@ -196,6 +196,33 @@ body {
   animation: fade-in-up 0.8s ease forwards;
 }
 
+/*
+ * Reveal targets (the `section > div` blocks the IntersectionObserver animates)
+ * are hidden from first paint when JS is active, so the fade-in never snaps
+ * from the default visible state to the `from` keyframe (which was causing the
+ * title flicker/twitch). The `.js` class is set by an inline head script before
+ * body paint. Without JS the content stays fully visible.
+ */
+.js section > div {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+/* Respect reduced-motion: reveal everything immediately, disable animations. */
+@media (prefers-reduced-motion: reduce) {
+  .js section > div {
+    opacity: 1;
+    transform: none;
+  }
+  .animate-fade-in-up,
+  .stagger-children > * {
+    animation: none !important;
+  }
+  .stagger-children > * {
+    opacity: 1 !important;
+  }
+}
+
 /* Stagger Children */
 .stagger-children > * {
   opacity: 0;
