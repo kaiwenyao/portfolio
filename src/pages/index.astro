@@ -525,15 +525,24 @@ const icons: Record<string, string> = {
     let startScrollLeft = 0;
     let lastTime = 0;
 
+    // Wrap scrollLeft across the duplicated copy so the marquee loops
+    // seamlessly in BOTH auto-scroll and drag directions (no end stop).
+    // Because the track holds two identical copies, offset X and X +/- half
+    // render identical content, so the wrap is visually invisible.
+    function wrap() {
+      const half = marquee.scrollWidth / 2;
+      if (half <= 0) return;
+      if (marquee.scrollLeft >= half) marquee.scrollLeft -= half;
+      else if (marquee.scrollLeft < 0) marquee.scrollLeft += half;
+    }
+
     // Time-based advance so speed is constant regardless of refresh rate.
     function frame(time) {
       const dt = time - lastTime;
       lastTime = time;
       if (!paused && !pointerActive && !prefersReducedMotion && dt > 0) {
         marquee.scrollLeft += speedPxPerSec * dt / 1000;
-        const half = marquee.scrollWidth / 2;
-        if (marquee.scrollLeft >= half) marquee.scrollLeft -= half;
-        else if (marquee.scrollLeft < 0) marquee.scrollLeft += half;
+        wrap();
       }
       requestAnimationFrame(frame);
     }
@@ -565,6 +574,10 @@ const icons: Record<string, string> = {
     marquee.addEventListener('pointermove', (e) => {
       if (!mouseDragging) return;
       marquee.scrollLeft = startScrollLeft - (e.clientX - startX);
+      // Keep the drag infinite: wrap across the duplicated copy as the user
+      // drags, mirroring the auto-scroll wrap. Because startScrollLeft lives
+      // in the same modular space, the math stays consistent mid-drag.
+      wrap();
     });
 
     const endDrag = (e) => {
