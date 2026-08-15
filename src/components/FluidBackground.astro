@@ -6,9 +6,9 @@
 // morphing, multi-colour aurora that is gently distorted/swirled where the
 // cursor moves (via a ping-pong "flowmap" simulation).
 //
-// Tuned for this site's light theme: a whisper of cool lavender mist on white
-// so dark text stays readable. The palette and motion live in the `config`
-// object below — adjust there to restyle without touching the renderer.
+// Tuned for this site's light theme: an airy porcelain mist on white so dark
+// text stays readable. The palette and motion live in the `config` object
+// below — adjust there to restyle without touching the renderer.
 //
 // Safeguards:
 //   * Requires WebGL2 — otherwise the static CSS orb fallback is kept.
@@ -66,7 +66,7 @@
     transition: opacity 0.8s ease;
   }
   .fluid-canvas.is-ready {
-    opacity: 0.42;
+    opacity: 0.75;
   }
   /* Once the canvas is live, drop the fallback out so it stops painting. */
   .fluid-root.is-ready .fluid-fallback {
@@ -86,35 +86,34 @@
     // --- Visual config (light-theme palette + motion). Tweak freely. ---------
     //
     // Tuning notes (light theme):
-    //  * GPU colours keep a little chroma so the gradient and cursor glow still
-    //    exist; CSS canvas opacity then lets the white page show through so the
-    //    field reads as paper mist instead of a pastel wallpaper.
-    //  * `glowColors` sit a notch more coloured than the base — enough for a
-    //    local whisper of light, not a coloured blob.
+    //  * Field is an airy porcelain mist (cool gray / lilac / sky) so the page
+    //    stays paper-white. Stops keep a little hue spread so the fluid reads.
+    //  * `glowColors` stay clearly more chromatic than the base — that's what
+    //    makes the cursor glow visible without turning the whole field loud.
     //  * The dark-theme "virtual light" (lightCore/lightHalo) is disabled — it
     //    just stamps white blobs that wash out a light background.
     //  * Bloom and vignette stay weak so they don't darken corners or re-brighten
     //    the glow toward white.
     const config = {
       // Up to 5 gradient colours, blended left→right across the fluid field.
-      // Cool gray-lavender, close to paper white, matching accent #5b5bf5.
-      colors: ['#eef0f8', '#ebeaf6', '#f3f4fa', '#eef2f8', '#f7f7fa'],
+      // Porcelain mist: periwinkle, lilac, sky, indigo paper, near-white.
+      colors: ['#dbe4f5', '#e5e0f2', '#d7eaf4', '#e0e6f5', '#e8edf6'],
       // 3-colour glow painted where the cursor disturbs the fluid. Order:
-      // outer → inner around the cursor. Slightly more chroma than the base.
-      glowColors: ['#ddd9f2', '#d8def4', '#e4e9f6'],
+      // outer → inner around the cursor. Keep distinct from the base.
+      glowColors: ['#c4b5fd', '#a5b4fc', '#bfdbfe'],
       speed: 18,            // overall animation speed (%)
       scale: 1.25,          // fluid feature scale
       offsetX: 0, offsetY: 0,
       grain: 0.01,          // film-grain amount
-      distortBoost: 0.7,    // how strongly the cursor pushes the field
-      swirlBoost: 0.7,      // how strongly the cursor swirls the field
-      glowIntensity: 0.55,  // cursor glow strength
+      distortBoost: 0.9,    // how strongly the cursor pushes the field
+      swirlBoost: 0.9,      // how strongly the cursor swirls the field
+      glowIntensity: 1.15,  // cursor glow strength
       lightX: 0.5, lightY: 0.5,
       lightCore: 0.0, lightHalo: 0.0,   // disabled (dark-theme device)
       vignette: 0.04,
       bloomThreshold: 0.95, bloomRange: 0.1, bloomStrength: 0.04,
       mouseRadius: 0.15,    // cursor brush radius (in UV units)
-      mouseStrength: 1.0,   // cursor brush strength (static glow even when still)
+      mouseStrength: 1.6,   // cursor brush strength (static glow even when still)
       mouseSmoothing: 0.12, // cursor position smoothing (snappier)
       mouseVelocity: 0.12,  // cursor velocity smoothing
       decay: 0.96,          // flowmap decay per frame (persist/trail length)
