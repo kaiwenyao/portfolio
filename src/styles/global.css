@@ -115,7 +115,7 @@ body {
   position: absolute;
   border-radius: 50%;
   filter: blur(90px);
-  opacity: 0.18;
+  opacity: 0.10;
   pointer-events: none;
 }
 
@@ -126,15 +126,15 @@ body {
 }
 
 .bg-orb-pink {
-  background: #c7c7ff;
+  background: #ddd9f2;
 }
 
 .bg-orb-violet {
-  background: #d9d6ff;
+  background: #ebeaf6;
 }
 
 .bg-orb-cyan {
-  background: #e4e9ff;
+  background: #eef2f8;
 }
 
 /* Card Styles */
