@@ -84,26 +84,40 @@
     const coarsePointer = window.matchMedia('(hover: none), (pointer: coarse)').matches;
 
     // --- Visual config (light-theme palette + motion). Tweak freely. ---------
+    //
+    // Tuning notes (light theme):
+    //  * `colors` deliberately span a real tonal range (mid pastels → near-white)
+    //    instead of all-near-white. A flat white palette made the gradient
+    //    invisible AND let the bloom step re-saturate the whole field back to
+    //    white, erasing the cursor glow. With mid-tones present, the gradient
+    //    reads and bloom only catches the brightest highlights.
+    //  * `glowColors` are saturated cools so the cursor glow pops against the
+    //    pale base; `glowIntensity` is high so the interaction is unmistakable.
+    //  * The dark-theme "virtual light" (lightCore/lightHalo) is disabled — it
+    //    just stamps white blobs that wash out a light background.
+    //  * Bloom threshold raised + strength lowered so it stops re-brightening
+    //    the cursor glow toward white.
     const config = {
       // Up to 5 gradient colours, blended left→right across the fluid field.
-      colors: ['#e7ebff', '#dfe6ff', '#efe6ff', '#dff0ff', '#f8f9ff'],
-      // 3-colour glow painted where the cursor disturbs the fluid.
-      glowColors: ['#b9c2ff', '#cdb6ff', '#aed0ff'],
-      speed: 22,            // overall animation speed (%)
-      scale: 1.0,           // fluid feature scale
+      colors: ['#93c5fd', '#a5b4fc', '#c4b5fd', '#bae6fd', '#eef2ff'],
+      // 3-colour glow painted where the cursor disturbs the fluid (bright, to
+      // pop against the pale base). Order: outer → inner around the cursor.
+      glowColors: ['#a78bfa', '#818cf8', '#22d3ee'],
+      speed: 26,            // overall animation speed (%)
+      scale: 1.1,           // fluid feature scale
       offsetX: 0, offsetY: 0,
-      grain: 0.025,         // film-grain amount
-      distortBoost: 0.45,   // how strongly the cursor pushes the field
-      swirlBoost: 0.45,     // how strongly the cursor swirls the field
-      glowIntensity: 0.55,  // cursor glow strength
-      lightX: 0.89, lightY: 0.46,
-      lightCore: 0.12, lightHalo: 0.18,
-      vignette: 0.22,
-      bloomThreshold: 0.7, bloomRange: 0.18, bloomStrength: 0.2,
-      mouseRadius: 0.14,    // cursor brush radius (in UV units)
-      mouseStrength: 1.0,   // cursor brush strength
-      mouseSmoothing: 0.08, // cursor position smoothing
-      mouseVelocity: 0.08,  // cursor velocity smoothing
+      grain: 0.02,          // film-grain amount
+      distortBoost: 0.9,    // how strongly the cursor pushes the field
+      swirlBoost: 0.9,      // how strongly the cursor swirls the field
+      glowIntensity: 1.15,  // cursor glow strength
+      lightX: 0.5, lightY: 0.5,
+      lightCore: 0.0, lightHalo: 0.0,   // disabled (dark-theme device)
+      vignette: 0.16,
+      bloomThreshold: 0.9, bloomRange: 0.12, bloomStrength: 0.12,
+      mouseRadius: 0.15,    // cursor brush radius (in UV units)
+      mouseStrength: 1.6,   // cursor brush strength (static glow even when still)
+      mouseSmoothing: 0.12, // cursor position smoothing (snappier)
+      mouseVelocity: 0.12,  // cursor velocity smoothing
       decay: 0.96,          // flowmap decay per frame (persist/trail length)
       renderScale: 0.8,     // backing-store downscale vs CSS pixels (perf)
     };
