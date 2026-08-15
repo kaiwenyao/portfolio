@@ -91,18 +91,21 @@
     //    invisible AND let the bloom step re-saturate the whole field back to
     //    white, erasing the cursor glow. With mid-tones present, the gradient
     //    reads and bloom only catches the brightest highlights.
-    //  * `glowColors` are saturated cools so the cursor glow pops against the
-    //    pale base; `glowIntensity` is high so the interaction is unmistakable.
+    //  * `glowColors` are soft cools — kept a notch more coloured than the base
+    //    so the cursor glow still reads, but low-saturation pastels rather than
+    //    neon, matching the restful palette.
     //  * The dark-theme "virtual light" (lightCore/lightHalo) is disabled — it
     //    just stamps white blobs that wash out a light background.
     //  * Bloom threshold raised + strength lowered so it stops re-brightening
     //    the cursor glow toward white.
     const config = {
       // Up to 5 gradient colours, blended left→right across the fluid field.
-      colors: ['#93c5fd', '#a5b4fc', '#c4b5fd', '#bae6fd', '#eef2ff'],
-      // 3-colour glow painted where the cursor disturbs the fluid (bright, to
-      // pop against the pale base). Order: outer → inner around the cursor.
-      glowColors: ['#a78bfa', '#818cf8', '#22d3ee'],
+      // Soft, low-saturation pastels (indigo/violet/blue 100–200 range).
+      colors: ['#c7d2fe', '#d6c7f0', '#cfe0f5', '#dbeafe', '#eef2ff'],
+      // 3-colour glow painted where the cursor disturbs the fluid. Order:
+      // outer → inner around the cursor. Gentle cools, less saturated than
+      // the previous vivid set but still clearly different from the base.
+      glowColors: ['#c4b5fd', '#a5b4fc', '#bfdbfe'],
       speed: 26,            // overall animation speed (%)
       scale: 1.1,           // fluid feature scale
       offsetX: 0, offsetY: 0,
@@ -113,7 +116,7 @@
       lightX: 0.5, lightY: 0.5,
       lightCore: 0.0, lightHalo: 0.0,   // disabled (dark-theme device)
       vignette: 0.16,
-      bloomThreshold: 0.9, bloomRange: 0.12, bloomStrength: 0.12,
+      bloomThreshold: 0.95, bloomRange: 0.1, bloomStrength: 0.08,
       mouseRadius: 0.15,    // cursor brush radius (in UV units)
       mouseStrength: 1.6,   // cursor brush strength (static glow even when still)
       mouseSmoothing: 0.12, // cursor position smoothing (snappier)
