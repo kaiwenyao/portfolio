@@ -18,8 +18,14 @@ const { title, description = "Personal Portfolio" } = Astro.props;
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
     <title>{title}</title>
+    {/* No-FOUC: mark JS active before first paint so reveal targets can be
+        hidden up front, preventing the visible→hidden→visible snap that
+        otherwise flickers section titles when the IntersectionObserver fires. */}
+    <script is:inline>
+      document.documentElement.classList.add('js');
+    </script>
   </head>
-  <body class="min-h-screen bg-[#0d1224] text-[#d3d8e8]">
+  <body class="min-h-screen bg-white text-[#3d3d3d]">
     <slot />
   </body>
 </html>
