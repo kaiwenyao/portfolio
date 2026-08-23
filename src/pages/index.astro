@@ -1,7 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import GridBackground from '../components/GridBackground.astro';
-import CodeWindow from '../components/CodeWindow.astro';
+import TuiWindow from '../components/TuiWindow.astro';
 
 const persona = {
   name: "Kaiwen Yao",
@@ -196,9 +196,9 @@ const icons: Record<string, string> = {
             </div>
           </div>
 
-          <!-- Right: Code Window -->
+          <!-- Right: Simulated TUI session -->
           <div class="order-2 flex lg:justify-start lg:ml-12 min-w-0">
-            <CodeWindow />
+            <TuiWindow />
           </div>
         </div>
       </div>

@@ -1,0 +1,527 @@
+---
+// TuiWindow.astro
+//
+// The hero card, rebuilt as a simulated TUI chat session after the terminal
+// demo on https://dshtui.com: a startup banner, a user turn, and an agent
+// streaming a self-introduction as an object literal, typed out character by
+// character the way a model streams tokens.
+//
+// The transcript is rendered server-side in full, so crawlers and no-JS
+// visitors get the complete text. On load the script blanks the text nodes
+// (keeping the coloured spans intact) and refills them, which is why the
+// reveal never loses syntax colour. `html.js`, set by Layout before first
+// paint, hides the stream until the script has armed it so the full text
+// never flashes.
+//
+// The session is a stylised demo, not live output — the caption under the
+// card says so, mirroring the reference's own "模拟演示" note.
+
+const bannerRows = [
+  '█  █  █   █',
+  '█ █    █ █ ',
+  '██      █  ',
+  '█ █     █  ',
+  '█  █    █  ',
+];
+
+// The agent turn, as [class, text] tuples per line. This lives in frontmatter
+// rather than in markup because Astro strips whitespace-only text nodes from
+// templates, which silently ate every indent and the space after `const`.
+// Expression strings are preserved verbatim, so the alignment survives.
+const agentLines: [string, string][][] = [
+  [['k', 'const'], ['p', ' '], ['i', 'kaiwen'], ['p', ' = '], ['p', '{']],
+  [['p', '  '], ['i', 'role'], ['p', ':    '], ['s', "'MSc CS @ UCD \u00b7 Backend & Full-Stack'"], ['p', ',']],
+  [['p', '  '], ['i', 'stack'], ['p', ':   '], ['b', '['], ['s', "'Java'"], ['p', ', '], ['s', "'Spring Boot'"], ['p', ', '], ['s', "'Go'"], ['p', ', '], ['s', "'FastAPI'"], ['p', ',']],
+  [['p', '            '], ['s', "'React'"], ['p', ', '], ['s', "'TypeScript'"], ['p', ', '], ['s', "'PostgreSQL'"], ['b', ']'], ['p', ',']],
+  [['p', '  '], ['i', 'focus'], ['p', ':   '], ['s', "'Reliable systems, clear APIs, AI features'"], ['p', ',']],
+  [['p', '  '], ['i', 'contact'], ['p', ': '], ['s', "'kaiwen.yao.ie@gmail.com'"], ['p', ',']],
+  [['p', '};']],
+];
+
+const statusRows = [
+  { chip: 'agent', mid: 'idle', right: 'ctx 1.2k/200k 0.6%' },
+  { left: 'portfolio-agent · max · 1.2k→412', right: 'main · portfolio' },
+  { left: '0 errors · 0 tools · 1 message', right: '? for shortcuts' },
+];
+---
+
+<div class="tui">
+  <div class="tui-halo" aria-hidden="true"></div>
+
+  <div class="tui-frame">
+    <!-- Title bar -->
+    <div class="tui-chrome">
+      <span class="light light-close" aria-hidden="true"></span>
+      <span class="light light-min" aria-hidden="true"></span>
+      <span class="light light-max" aria-hidden="true"></span>
+      <span class="chrome-title">kaiwen-tui — fullscreen · 96×28</span>
+      <span class="chrome-meta">portfolio v1.0</span>
+    </div>
+
+    <!-- Startup banner -->
+    <div class="tui-banner">
+      <pre class="banner-mark" aria-hidden="true">{bannerRows.join('\n')}</pre>
+      <div class="banner-text">
+        <div class="banner-word">KAIWEN YAO</div>
+        <div class="banner-lines">
+          <div><span class="t-text">portfolio-agent</span> <span class="t-faint">· Max effort</span></div>
+          <div class="t-dim">~/portfolio</div>
+          <div class="t-dim">
+            Tip: <span class="t-accent">/about</span> · <span class="t-accent">/stack</span> ·
+            <span class="t-accent">/contact</span> · Tab to complete
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tui-tagline">BUILDING RELIABLE SYSTEMS</div>
+
+    <!-- Transcript -->
+    <div class="tui-stream">
+      <div class="tui-user"><span class="user-caret">&gt;</span> tell me about yourself</div>
+
+      <div class="tui-thinking" hidden><span class="spinner">⠋</span> thinking…</div>
+
+      <div class="tui-agent">
+        {agentLines.map((line) => (
+          <div>{line.map(([cls, text]) => <span class={cls}>{text}</span>)}</div>
+        ))}
+      </div>
+
+      <span class="tui-caret" aria-hidden="true"></span>
+    </div>
+
+    <!-- Status strip -->
+    <div class="tui-status">
+      {statusRows.map((row) => (
+        <div class="status-row">
+          {row.chip ? <span class="status-chip">{row.chip}</span> : <span class="t-text truncate">{row.left}</span>}
+          {row.mid && <span class="t-faint status-wide">{row.mid}</span>}
+          <span class="status-right">{row.right}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <p class="tui-note">↑ simulated session</p>
+</div>
+
+<style>
+  .tui {
+    --term-bg: #fafaf7;
+    --term-chrome: #f0f0ea;
+    --term-status: #eef0f4;
+    --term-userbar: #f6efdb;
+    --term-line: #e2e5ee;
+    --term-text: #263146;
+    --term-dim: #66718a;
+    --term-faint: #98a1b6;
+    --term-accent: #3b53c2;
+    --term-chip: #4b6fff;
+    --term-shadow: 0 24px 70px -18px rgba(23, 37, 84, 0.28);
+    --term-shadow-lift: 0 34px 86px -16px rgba(23, 37, 84, 0.36);
+    --halo: rgba(75, 111, 255, 0.1);
+    --halo-lift: rgba(75, 111, 255, 0.17);
+
+    --tok-key: #9b3bb0;
+    --tok-ident: #3b53c2;
+    --tok-str: #0f7a43;
+    --tok-brack: #a8560f;
+    --tok-punc: #66718a;
+
+    --ease-out-quint: cubic-bezier(0.16, 1, 0.3, 1);
+
+    position: relative;
+    width: 100%;
+    max-width: 48rem;
+    min-width: 0;
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    animation: window-in 0.6s var(--ease-out-quint) both;
+  }
+
+  .tui-halo {
+    position: absolute;
+    inset: -1.5rem;
+    border-radius: 1rem;
+    background: radial-gradient(closest-side, var(--halo), transparent);
+    pointer-events: none;
+    transition: background 0.45s ease;
+  }
+
+  .tui-frame {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--term-line);
+    border-radius: 0.5rem;
+    background: var(--term-bg);
+    box-shadow: var(--term-shadow);
+    transition:
+      transform 0.45s var(--ease-out-quint),
+      box-shadow 0.45s var(--ease-out-quint);
+  }
+
+  /* ---- Title bar ---- */
+  .tui-chrome {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 0.875rem;
+    background: var(--term-chrome);
+    border-bottom: 1px solid var(--term-line);
+  }
+
+  .light {
+    width: 0.625rem;
+    height: 0.625rem;
+    border-radius: 9999px;
+    opacity: 0.8;
+    transition: opacity 0.35s ease;
+  }
+  .light-close { background: #f0685f; }
+  .light-min { background: #f5c542; }
+  .light-max { background: #3ddc84; }
+
+  .chrome-title {
+    margin-left: 0.5rem;
+    font-size: 11px;
+    color: var(--term-faint);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .chrome-meta {
+    display: none;
+    margin-left: auto;
+    font-size: 11px;
+    color: var(--term-faint);
+    white-space: nowrap;
+  }
+
+  /* ---- Banner ---- */
+  .tui-banner {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem 1rem 0;
+  }
+
+  .banner-mark {
+    margin: 0;
+    color: var(--term-accent);
+    font-size: 9px;
+    line-height: 1.15;
+    white-space: pre;
+    flex-shrink: 0;
+  }
+
+  .banner-word {
+    color: var(--term-accent);
+    font-size: clamp(15px, 2.6vw, 22px);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    line-height: 1.3;
+  }
+
+  .banner-lines {
+    margin-top: 0.5rem;
+    font-size: 11px;
+    line-height: 1.7;
+  }
+
+  .tui-tagline {
+    padding: 0.75rem 1rem 0;
+    color: var(--term-accent);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+  }
+
+  .t-text { color: var(--term-text); }
+  .t-dim { color: var(--term-dim); }
+  .t-faint { color: var(--term-faint); }
+  .t-accent { color: var(--term-accent); }
+
+  /* ---- Transcript ---- */
+  .tui-stream {
+    height: 240px;
+    margin-top: 0.75rem;
+    padding: 0 1rem 0.75rem;
+    overflow: auto;
+    color: var(--term-text);
+    font-size: 12px;
+    line-height: 1.85;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: var(--term-line) transparent;
+  }
+
+  /* Armed by the script once the text nodes are blanked, so the finished
+     transcript never flashes before the reveal starts. */
+  :global(html.js) .tui-stream { visibility: hidden; }
+  :global(html.js) .tui-stream.is-armed { visibility: visible; }
+
+  .tui-user {
+    margin-bottom: 0.5rem;
+    padding: 0.25rem 0.5rem;
+    background: var(--term-userbar);
+    border-radius: 0.125rem;
+    color: var(--term-text);
+  }
+
+  .user-caret {
+    color: var(--term-accent);
+    font-weight: 700;
+  }
+
+  .tui-thinking {
+    color: var(--term-dim);
+  }
+  .tui-thinking[hidden] { display: none; }
+
+  .spinner { color: var(--term-accent); }
+
+  .tui-agent > div {
+    white-space: pre;
+  }
+
+  .k { color: var(--tok-key); }
+  .i { color: var(--tok-ident); }
+  .s { color: var(--tok-str); }
+  .b { color: var(--tok-brack); }
+  .p { color: var(--tok-punc); }
+
+  .tui-caret {
+    display: inline-block;
+    width: 0.5em;
+    height: 1.05em;
+    background: var(--tok-ident);
+    vertical-align: text-bottom;
+    animation: caret-blink 1.1s step-start infinite;
+  }
+
+  /* ---- Status strip ---- */
+  .tui-status {
+    padding: 0.375rem 0.75rem;
+    border-top: 1px solid var(--term-line);
+    background: var(--term-status);
+    color: var(--term-dim);
+    font-size: 10.5px;
+    line-height: 1.75;
+    user-select: none;
+  }
+
+  .status-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .status-chip {
+    border-radius: 0.125rem;
+    padding: 0 0.375rem;
+    background: var(--term-chip);
+    color: #fff;
+    font-weight: 500;
+  }
+
+  .status-right {
+    white-space: nowrap;
+    color: var(--term-faint);
+  }
+
+  .status-row:first-child .status-right { color: var(--term-text); }
+
+  .truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .status-wide { display: none; }
+
+  .tui-note {
+    margin-top: 0.75rem;
+    text-align: center;
+    font-size: 11px;
+    color: var(--term-faint);
+  }
+
+  @media (min-width: 640px) {
+    .tui-banner { padding: 1.25rem 1.25rem 0; gap: 1.75rem; }
+    .banner-mark { font-size: 11px; }
+    .banner-lines { font-size: 12px; }
+    .tui-tagline { padding: 0.75rem 1.25rem 0; font-size: 13px; }
+    .tui-stream { height: 270px; padding: 0 1.25rem 0.75rem; font-size: 13px; }
+    .tui-status { padding: 0.375rem 1rem; font-size: 11.5px; }
+    .chrome-meta,
+    .status-wide { display: block; }
+  }
+
+  /* ---- Interaction ---- */
+  @media (hover: hover) {
+    .tui:hover .tui-frame {
+      transform: translateY(-4px);
+      box-shadow: var(--term-shadow-lift);
+    }
+    .tui:hover .tui-halo {
+      background: radial-gradient(closest-side, var(--halo-lift), transparent);
+    }
+    .tui:hover .light { opacity: 1; }
+  }
+
+  @keyframes window-in {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  @keyframes caret-blink {
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tui { animation: none; }
+    .tui-frame,
+    .tui-halo,
+    .light { transition: none; }
+    .tui-caret { animation: none; }
+    .tui-stream { scroll-behavior: auto; }
+  }
+</style>
+
+<script>
+  (function () {
+    const root = document.querySelector('.tui');
+    if (!root) return;
+
+    const stream = root.querySelector('.tui-stream') as HTMLElement | null;
+    const agent = root.querySelector('.tui-agent') as HTMLElement | null;
+    const thinking = root.querySelector('.tui-thinking') as HTMLElement | null;
+    const spinner = root.querySelector('.spinner') as HTMLElement | null;
+    const caret = root.querySelector('.tui-caret') as HTMLElement | null;
+    if (!stream || !agent || !thinking || !spinner || !caret) return;
+
+    const CHARS_PER_TICK = 2;      // revealed per animation frame
+    const LINE_PAUSE_MS = 90;      // beat at the end of each line
+    const THINK_DELAY_MS = 700;    // spinner runs this long before streaming
+    const SPINNER_INTERVAL_MS = 80;
+    const SPINNER_FRAMES = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Every text node of the agent turn, in document order, paired with the
+    // text it should end up holding. Walking the line elements rather than the
+    // whole block skips the whitespace nodes Astro leaves between them, which
+    // would otherwise park the caret outside a line.
+    const nodes: Text[] = [];
+    for (const line of Array.from(agent.children)) {
+      const walker = document.createTreeWalker(line, NodeFilter.SHOW_TEXT);
+      while (walker.nextNode()) nodes.push(walker.currentNode as Text);
+    }
+    const contents = nodes.map((node) => node.nodeValue ?? '');
+
+    function park(node: Text) {
+      const parent = node.parentElement;
+      if (parent) parent.appendChild(caret);
+    }
+
+    function finish() {
+      nodes.forEach((node, i) => { node.nodeValue = contents[i]; });
+      const last = nodes[nodes.length - 1];
+      if (last) park(last);
+    }
+
+    if (reduceMotion) {
+      stream.classList.add('is-armed');
+      thinking.hidden = true;
+      finish();
+      return;
+    }
+
+    // Blank the transcript, then reveal it. Colours survive because only the
+    // text nodes are emptied — their spans stay in place.
+    nodes.forEach((node) => { node.nodeValue = ''; });
+    thinking.hidden = false;
+    park(nodes[0] ?? agent.firstChild as Text);
+    stream.classList.add('is-armed');
+
+    let nodeIndex = 0;
+    let charIndex = 0;
+    let pausedUntil = 0;
+    let raf: number | null = null;
+
+    function type(now: number) {
+      if (now < pausedUntil) {
+        raf = requestAnimationFrame(type);
+        return;
+      }
+
+      for (let budget = CHARS_PER_TICK; budget > 0; budget--) {
+        while (nodeIndex < nodes.length && charIndex >= contents[nodeIndex].length) {
+          nodeIndex++;
+          charIndex = 0;
+        }
+        if (nodeIndex >= nodes.length) {
+          finish();
+          return;
+        }
+
+        const node = nodes[nodeIndex];
+        const text = contents[nodeIndex];
+        charIndex++;
+        node.nodeValue = text.slice(0, charIndex);
+        park(node);
+
+        // Whitespace runs cost nothing, so indentation snaps into place.
+        if (text[charIndex - 1] === ' ') budget++;
+
+        // A finished node that ends a line earns a beat.
+        if (charIndex >= text.length && node.parentElement?.nextElementSibling === null) {
+          pausedUntil = now + LINE_PAUSE_MS;
+          stream.scrollTop = stream.scrollHeight;
+          break;
+        }
+      }
+
+      stream.scrollTop = stream.scrollHeight;
+      raf = requestAnimationFrame(type);
+    }
+
+    function beginThinking() {
+      let frame = 0;
+      const spin = window.setInterval(() => {
+        frame = (frame + 1) % SPINNER_FRAMES.length;
+        spinner.textContent = SPINNER_FRAMES[frame];
+      }, SPINNER_INTERVAL_MS);
+
+      window.setTimeout(() => {
+        window.clearInterval(spin);
+        thinking.hidden = true;
+        raf = requestAnimationFrame(type);
+      }, THINK_DELAY_MS);
+    }
+
+    // Hold the session until the card is actually on screen, so a visitor
+    // landing mid-page still sees it play rather than arriving finished.
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        if (!entries[0].isIntersecting) return;
+        io.disconnect();
+        beginThinking();
+      }, { threshold: 0.25 });
+      io.observe(root);
+    } else {
+      beginThinking();
+    }
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden && raf !== null) {
+        cancelAnimationFrame(raf);
+        raf = null;
+      } else if (!document.hidden && raf === null && nodeIndex < nodes.length) {
+        raf = requestAnimationFrame(type);
+      }
+    });
+  })();
+</script>
