@@ -7,9 +7,8 @@
 // prompt to the visitor.
 //
 // The agent is a fixture, not a model: every question returns the contact
-// card, and the reply says so rather than pretending to have understood.
-// The "simulated session" caption under the card marks the whole thing as
-// staged, mirroring the reference's own note.
+// card, and the reply opens by saying so rather than pretending to have
+// understood the question.
 //
 // The opening transcript is rendered server-side in full, so crawlers and
 // no-JS visitors get the text. The typewriter blanks only its text nodes and
@@ -123,8 +122,6 @@ const statusRows = [
       ))}
     </div>
   </div>
-
-  <p class="tui-note">↑ simulated session · every question returns the contact card</p>
 
   <template class="tui-question-template">
     <div class="tui-user"><span class="user-sigil">&gt;</span><span class="user-text"></span></div>
@@ -432,13 +429,6 @@ const statusRows = [
   }
 
   .status-wide { display: none; }
-
-  .tui-note {
-    margin-top: 0.75rem;
-    text-align: center;
-    font-size: 11px;
-    color: var(--term-faint);
-  }
 
   @media (min-width: 640px) {
     .tui-banner { padding: 1.25rem 1.25rem 0; gap: 1.75rem; }
