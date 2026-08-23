@@ -1,6 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import FluidBackground from '../components/FluidBackground.astro';
+import GridBackground from '../components/GridBackground.astro';
 
 const persona = {
   name: "Kaiwen Yao",
@@ -118,8 +118,8 @@ const icons: Record<string, string> = {
 ---
 
 <Layout title={`${persona.name} - ${persona.title}`} description={persona.intro}>
-  <!-- Animated fluid-gradient background (DeepSeek-Harness-style) -->
-  <FluidBackground />
+  <!-- Static blueprint-grid background -->
+  <GridBackground />
 
   <!-- Navigation -->
   <nav class="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl border-b border-[#ececf1]">
