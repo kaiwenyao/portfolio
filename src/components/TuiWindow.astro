@@ -1,20 +1,26 @@
 ---
 // TuiWindow.astro
 //
-// The hero card, rebuilt as a simulated TUI chat session after the terminal
-// demo on https://dshtui.com: a startup banner, a user turn, and an agent
-// streaming a self-introduction as an object literal, typed out character by
-// character the way a model streams tokens.
+// The hero card, built as an interactive TUI chat session after the terminal
+// demo on https://dshtui.com. It opens with a scripted turn — an agent
+// streaming a self-introduction as an object literal — and then hands the
+// prompt to the visitor.
 //
-// The transcript is rendered server-side in full, so crawlers and no-JS
-// visitors get the complete text. On load the script blanks the text nodes
-// (keeping the coloured spans intact) and refills them, which is why the
-// reveal never loses syntax colour. `html.js`, set by Layout before first
-// paint, hides the stream until the script has armed it so the full text
-// never flashes.
+// The agent is a fixture, not a model: every question returns the contact
+// card, and the reply says so rather than pretending to have understood.
+// The "simulated session" caption under the card marks the whole thing as
+// staged, mirroring the reference's own note.
 //
-// The session is a stylised demo, not live output — the caption under the
-// card says so, mirroring the reference's own "模拟演示" note.
+// The opening transcript is rendered server-side in full, so crawlers and
+// no-JS visitors get the text. The typewriter blanks only its text nodes and
+// refills them, leaving the coloured spans in place, which is how the reveal
+// keeps its syntax colour. `html.js`, set by Layout before first paint, hides
+// the stream until the script arms it so the finished text never flashes.
+
+// Lines are [class, text] tuples rather than markup because Astro strips
+// whitespace-only text nodes from templates, which eats every indent.
+// Expression strings survive verbatim.
+type Line = [string, string][];
 
 const bannerRows = [
   '█  █  █   █',
@@ -24,17 +30,21 @@ const bannerRows = [
   '█  █    █  ',
 ];
 
-// The agent turn, as [class, text] tuples per line. This lives in frontmatter
-// rather than in markup because Astro strips whitespace-only text nodes from
-// templates, which silently ate every indent and the space after `const`.
-// Expression strings are preserved verbatim, so the alignment survives.
-const agentLines: [string, string][][] = [
+const agentLines: Line[] = [
   [['k', 'const'], ['p', ' '], ['i', 'kaiwen'], ['p', ' = '], ['p', '{']],
-  [['p', '  '], ['i', 'role'], ['p', ':    '], ['s', "'MSc CS @ UCD \u00b7 Backend & Full-Stack'"], ['p', ',']],
+  [['p', '  '], ['i', 'role'], ['p', ':    '], ['s', "'MSc CS @ UCD · Backend & Full-Stack'"], ['p', ',']],
   [['p', '  '], ['i', 'stack'], ['p', ':   '], ['b', '['], ['s', "'Java'"], ['p', ', '], ['s', "'Spring Boot'"], ['p', ', '], ['s', "'Go'"], ['p', ', '], ['s', "'FastAPI'"], ['p', ',']],
   [['p', '            '], ['s', "'React'"], ['p', ', '], ['s', "'TypeScript'"], ['p', ', '], ['s', "'PostgreSQL'"], ['b', ']'], ['p', ',']],
   [['p', '  '], ['i', 'focus'], ['p', ':   '], ['s', "'Reliable systems, clear APIs, AI features'"], ['p', ',']],
   [['p', '  '], ['i', 'contact'], ['p', ': '], ['s', "'kaiwen.yao.ie@gmail.com'"], ['p', ',']],
+  [['p', '};']],
+];
+
+const replyLines: Line[] = [
+  [['k', 'const'], ['p', ' '], ['i', 'contact'], ['p', ' = '], ['p', '{']],
+  [['p', '  '], ['i', 'email'], ['p', ':    '], ['s', "'kaiwen.yao.ie@gmail.com'"], ['p', ',']],
+  [['p', '  '], ['i', 'github'], ['p', ':   '], ['s', "'github.com/kaiwenyao'"], ['p', ',']],
+  [['p', '  '], ['i', 'linkedin'], ['p', ': '], ['s', "'linkedin.com/in/kaiwen-yao-356385366'"], ['p', ',']],
   [['p', '};']],
 ];
 
@@ -49,7 +59,6 @@ const statusRows = [
   <div class="tui-halo" aria-hidden="true"></div>
 
   <div class="tui-frame">
-    <!-- Title bar -->
     <div class="tui-chrome">
       <span class="light light-close" aria-hidden="true"></span>
       <span class="light light-min" aria-hidden="true"></span>
@@ -58,7 +67,6 @@ const statusRows = [
       <span class="chrome-meta">portfolio v1.0</span>
     </div>
 
-    <!-- Startup banner -->
     <div class="tui-banner">
       <pre class="banner-mark" aria-hidden="true">{bannerRows.join('\n')}</pre>
       <div class="banner-text">
@@ -75,9 +83,8 @@ const statusRows = [
     </div>
     <div class="tui-tagline">BUILDING RELIABLE SYSTEMS</div>
 
-    <!-- Transcript -->
-    <div class="tui-stream">
-      <div class="tui-user"><span class="user-caret">&gt;</span> tell me about yourself</div>
+    <div class="tui-stream" role="log" aria-live="polite">
+      <div class="tui-user"><span class="user-sigil">&gt;</span><span class="user-text">tell me about yourself</span></div>
 
       <div class="tui-thinking" hidden><span class="spinner">⠋</span> thinking…</div>
 
@@ -90,11 +97,26 @@ const statusRows = [
       <span class="tui-caret" aria-hidden="true"></span>
     </div>
 
-    <!-- Status strip -->
+    <form class="tui-prompt" autocomplete="off">
+      <span class="prompt-sigil" aria-hidden="true">&gt;</span>
+      <span class="prompt-idle" aria-hidden="true"></span>
+      <input
+        class="prompt-input"
+        type="text"
+        name="question"
+        maxlength="120"
+        placeholder="ask me anything"
+        aria-label="Ask the portfolio agent"
+      />
+      <span class="prompt-hint" aria-hidden="true">↵</span>
+    </form>
+
     <div class="tui-status">
       {statusRows.map((row) => (
         <div class="status-row">
-          {row.chip ? <span class="status-chip">{row.chip}</span> : <span class="t-text truncate">{row.left}</span>}
+          {row.chip
+            ? <span class="status-chip">{row.chip}</span>
+            : <span class="status-left t-text truncate">{row.left}</span>}
           {row.mid && <span class="t-faint status-wide">{row.mid}</span>}
           <span class="status-right">{row.right}</span>
         </div>
@@ -102,7 +124,20 @@ const statusRows = [
     </div>
   </div>
 
-  <p class="tui-note">↑ simulated session</p>
+  <p class="tui-note">↑ simulated session · every question returns the contact card</p>
+
+  <template class="tui-question-template">
+    <div class="tui-user"><span class="user-sigil">&gt;</span><span class="user-text"></span></div>
+  </template>
+
+  <template class="tui-reply-template">
+    <div class="tui-agent">
+      <div class="lead"><span class="d">⏺ I'm a fixture, not a model — here's how to reach the real one:</span></div>
+      {replyLines.map((line) => (
+        <div>{line.map(([cls, text]) => <span class={cls}>{text}</span>)}</div>
+      ))}
+    </div>
+  </template>
 </div>
 
 <style>
@@ -243,9 +278,9 @@ const statusRows = [
 
   /* ---- Transcript ---- */
   .tui-stream {
-    height: 240px;
+    height: 200px;
     margin-top: 0.75rem;
-    padding: 0 1rem 0.75rem;
+    padding: 0 1rem;
     overflow: auto;
     color: var(--term-text);
     font-size: 12px;
@@ -255,7 +290,7 @@ const statusRows = [
     scrollbar-color: var(--term-line) transparent;
   }
 
-  /* Armed by the script once the text nodes are blanked, so the finished
+  /* Armed once the script has blanked the text nodes, so the finished
      transcript never flashes before the reveal starts. */
   :global(html.js) .tui-stream { visibility: hidden; }
   :global(html.js) .tui-stream.is-armed { visibility: visible; }
@@ -266,37 +301,96 @@ const statusRows = [
     background: var(--term-userbar);
     border-radius: 0.125rem;
     color: var(--term-text);
+    overflow-wrap: anywhere;
   }
 
-  .user-caret {
+  .user-sigil {
+    margin-right: 0.4em;
     color: var(--term-accent);
     font-weight: 700;
   }
 
-  .tui-thinking {
-    color: var(--term-dim);
-  }
+  .tui-thinking { color: var(--term-dim); }
   .tui-thinking[hidden] { display: none; }
-
   .spinner { color: var(--term-accent); }
 
-  .tui-agent > div {
-    white-space: pre;
-  }
+  .tui-agent { margin-bottom: 0.5rem; }
+  .tui-agent > div { white-space: pre; }
+  .tui-agent .lead { white-space: normal; margin-bottom: 0.25rem; }
 
   .k { color: var(--tok-key); }
   .i { color: var(--tok-ident); }
   .s { color: var(--tok-str); }
   .b { color: var(--tok-brack); }
   .p { color: var(--tok-punc); }
+  .d { color: var(--term-dim); }
 
+  /* Only shown while the write head is moving — at rest the blinking cursor
+     belongs in the prompt, not at the end of the last reply. */
   .tui-caret {
-    display: inline-block;
+    display: none;
     width: 0.5em;
     height: 1.05em;
     background: var(--tok-ident);
     vertical-align: text-bottom;
     animation: caret-blink 1.1s step-start infinite;
+  }
+  .tui-caret.is-typing { display: inline-block; }
+
+  /* ---- Prompt ---- */
+  .tui-prompt {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0.625rem 1rem;
+    padding: 0.375rem 0.5rem;
+    border: 1px solid var(--term-line);
+    border-radius: 0.25rem;
+    background: #fff;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .tui-prompt:focus-within {
+    border-color: var(--term-accent);
+    box-shadow: 0 0 0 2px rgba(75, 111, 255, 0.12);
+  }
+
+  .prompt-sigil {
+    color: var(--term-accent);
+    font-weight: 700;
+    font-size: 12px;
+  }
+
+  .prompt-input {
+    flex: 1;
+    min-width: 0;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: var(--term-text);
+    caret-color: var(--term-accent);
+    font: inherit;
+    font-size: 12px;
+    outline: none;
+  }
+
+  .prompt-input::placeholder { color: var(--term-faint); }
+
+  /* Idle block cursor: the terminal look while nothing is typed. Once the
+     field is focused or holds text, the native caret takes over. */
+  .prompt-idle {
+    display: inline-block;
+    width: 0.5em;
+    height: 1.05em;
+    background: var(--term-accent);
+    animation: caret-blink 1.1s step-start infinite;
+  }
+  .tui-prompt:focus-within .prompt-idle,
+  .tui-prompt:has(.prompt-input:not(:placeholder-shown)) .prompt-idle { display: none; }
+
+  .prompt-hint {
+    color: var(--term-faint);
+    font-size: 11px;
   }
 
   /* ---- Status strip ---- */
@@ -329,7 +423,6 @@ const statusRows = [
     white-space: nowrap;
     color: var(--term-faint);
   }
-
   .status-row:first-child .status-right { color: var(--term-text); }
 
   .truncate {
@@ -352,10 +445,11 @@ const statusRows = [
     .banner-mark { font-size: 11px; }
     .banner-lines { font-size: 12px; }
     .tui-tagline { padding: 0.75rem 1.25rem 0; font-size: 13px; }
-    .tui-stream { height: 270px; padding: 0 1.25rem 0.75rem; font-size: 13px; }
+    .tui-stream { height: 230px; padding: 0 1.25rem; font-size: 13px; }
+    .tui-prompt { margin: 0.625rem 1.25rem; }
+    .prompt-sigil, .prompt-input { font-size: 13px; }
     .tui-status { padding: 0.375rem 1rem; font-size: 11.5px; }
-    .chrome-meta,
-    .status-wide { display: block; }
+    .chrome-meta, .status-wide { display: block; }
   }
 
   /* ---- Interaction ---- */
@@ -382,146 +476,146 @@ const statusRows = [
 
   @media (prefers-reduced-motion: reduce) {
     .tui { animation: none; }
-    .tui-frame,
-    .tui-halo,
-    .light { transition: none; }
-    .tui-caret { animation: none; }
+    .tui-frame, .tui-halo, .light { transition: none; }
+    .tui-caret, .prompt-idle { animation: none; }
     .tui-stream { scroll-behavior: auto; }
   }
 </style>
 
 <script>
-  (function () {
-    const root = document.querySelector('.tui');
-    if (!root) return;
+  import { createTypewriter } from '../scripts/typewriter';
 
-    const stream = root.querySelector('.tui-stream') as HTMLElement | null;
-    const agent = root.querySelector('.tui-agent') as HTMLElement | null;
-    const thinking = root.querySelector('.tui-thinking') as HTMLElement | null;
-    const spinner = root.querySelector('.spinner') as HTMLElement | null;
-    const caret = root.querySelector('.tui-caret') as HTMLElement | null;
-    if (!stream || !agent || !thinking || !spinner || !caret) return;
+  const root = document.querySelector('.tui');
+  if (root) {
+    const stream = root.querySelector('.tui-stream') as HTMLElement;
+    const agent = root.querySelector('.tui-agent') as HTMLElement;
+    const thinking = root.querySelector('.tui-thinking') as HTMLElement;
+    const spinner = root.querySelector('.spinner') as HTMLElement;
+    const caret = root.querySelector('.tui-caret') as HTMLElement;
+    const form = root.querySelector('.tui-prompt') as HTMLFormElement;
+    const input = root.querySelector('.prompt-input') as HTMLInputElement;
+    const replyTemplate = root.querySelector('.tui-reply-template') as HTMLTemplateElement;
+    const questionTemplate = root.querySelector('.tui-question-template') as HTMLTemplateElement;
+    const counter = root.querySelector('.tui-status .status-row:last-child .status-left');
 
-    const CHARS_PER_TICK = 2;      // revealed per animation frame
-    const LINE_PAUSE_MS = 90;      // beat at the end of each line
-    const THINK_DELAY_MS = 700;    // spinner runs this long before streaming
+    const THINK_DELAY_MS = 700;
     const SPINNER_INTERVAL_MS = 80;
     const SPINNER_FRAMES = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];
 
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // Every text node of the agent turn, in document order, paired with the
-    // text it should end up holding. Walking the line elements rather than the
-    // whole block skips the whitespace nodes Astro leaves between them, which
-    // would otherwise park the caret outside a line.
-    const nodes: Text[] = [];
-    for (const line of Array.from(agent.children)) {
-      const walker = document.createTreeWalker(line, NodeFilter.SHOW_TEXT);
-      while (walker.nextNode()) nodes.push(walker.currentNode as Text);
-    }
-    const contents = nodes.map((node) => node.nodeValue ?? '');
+    let isBusy = true;
+    let messageCount = 1;
 
-    function park(node: Text) {
-      const parent = node.parentElement;
-      if (parent) parent.appendChild(caret);
+    const scrollToEnd = () => { stream.scrollTop = stream.scrollHeight; };
+
+    function setCounter() {
+      if (!counter) return;
+      const noun = messageCount === 1 ? 'message' : 'messages';
+      counter.textContent = `0 errors · 0 tools · ${messageCount} ${noun}`;
     }
 
-    function finish() {
-      nodes.forEach((node, i) => { node.nodeValue = contents[i]; });
-      const last = nodes[nodes.length - 1];
-      if (last) park(last);
+    function settle() {
+      isBusy = false;
+      caret.classList.remove('is-typing');
+      scrollToEnd();
     }
 
-    if (reduceMotion) {
-      stream.classList.add('is-armed');
-      thinking.hidden = true;
-      finish();
-      return;
+    function streamBlock(block: Element) {
+      caret.classList.add('is-typing');
+      const writer = createTypewriter(block, caret, {
+        onAdvance: scrollToEnd,
+        onDone: settle,
+      });
+      if (reduceMotion) writer.reveal();
+      else writer.play();
     }
 
-    // Blank the transcript, then reveal it. Colours survive because only the
-    // text nodes are emptied — their spans stay in place.
-    nodes.forEach((node) => { node.nodeValue = ''; });
-    thinking.hidden = false;
-    park(nodes[0] ?? agent.firstChild as Text);
-    stream.classList.add('is-armed');
-
-    let nodeIndex = 0;
-    let charIndex = 0;
-    let pausedUntil = 0;
-    let raf: number | null = null;
-
-    function type(now: number) {
-      if (now < pausedUntil) {
-        raf = requestAnimationFrame(type);
+    // Braille spinner, then the callback. Reduced motion skips straight through.
+    function think(next: () => void) {
+      if (reduceMotion) {
+        next();
         return;
       }
-
-      for (let budget = CHARS_PER_TICK; budget > 0; budget--) {
-        while (nodeIndex < nodes.length && charIndex >= contents[nodeIndex].length) {
-          nodeIndex++;
-          charIndex = 0;
-        }
-        if (nodeIndex >= nodes.length) {
-          finish();
-          return;
-        }
-
-        const node = nodes[nodeIndex];
-        const text = contents[nodeIndex];
-        charIndex++;
-        node.nodeValue = text.slice(0, charIndex);
-        park(node);
-
-        // Whitespace runs cost nothing, so indentation snaps into place.
-        if (text[charIndex - 1] === ' ') budget++;
-
-        // A finished node that ends a line earns a beat.
-        if (charIndex >= text.length && node.parentElement?.nextElementSibling === null) {
-          pausedUntil = now + LINE_PAUSE_MS;
-          stream.scrollTop = stream.scrollHeight;
-          break;
-        }
-      }
-
-      stream.scrollTop = stream.scrollHeight;
-      raf = requestAnimationFrame(type);
-    }
-
-    function beginThinking() {
+      thinking.hidden = false;
+      scrollToEnd();
       let frame = 0;
       const spin = window.setInterval(() => {
         frame = (frame + 1) % SPINNER_FRAMES.length;
         spinner.textContent = SPINNER_FRAMES[frame];
       }, SPINNER_INTERVAL_MS);
-
       window.setTimeout(() => {
         window.clearInterval(spin);
         thinking.hidden = true;
-        raf = requestAnimationFrame(type);
+        next();
       }, THINK_DELAY_MS);
     }
 
-    // Hold the session until the card is actually on screen, so a visitor
-    // landing mid-page still sees it play rather than arriving finished.
-    if ('IntersectionObserver' in window) {
-      const io = new IntersectionObserver((entries) => {
-        if (!entries[0].isIntersecting) return;
-        io.disconnect();
-        beginThinking();
-      }, { threshold: 0.25 });
-      io.observe(root);
-    } else {
-      beginThinking();
+    function appendQuestion(text: string) {
+      const line = questionTemplate.content.firstElementChild?.cloneNode(true) as Element | undefined;
+      if (!line) return;
+      // textContent, never innerHTML — typed input is never parsed as markup.
+      const slot = line.querySelector('.user-text');
+      if (slot) slot.textContent = text;
+      stream.appendChild(line);
     }
 
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden && raf !== null) {
-        cancelAnimationFrame(raf);
-        raf = null;
-      } else if (!document.hidden && raf === null && nodeIndex < nodes.length) {
-        raf = requestAnimationFrame(type);
+    function answer() {
+      const reply = replyTemplate.content.firstElementChild?.cloneNode(true) as Element | undefined;
+      if (!reply) {
+        settle();
+        return;
       }
+      stream.appendChild(reply);
+      streamBlock(reply);
+    }
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const question = input.value.trim();
+      if (!question || isBusy) return;
+
+      isBusy = true;
+      input.value = '';
+      appendQuestion(question);
+      messageCount += 2;
+      setCounter();
+      stream.appendChild(thinking);
+      scrollToEnd();
+      think(answer);
     });
-  })();
+
+    // Built up front so the opening turn can be blanked before the stream is
+    // made visible — otherwise the finished text shows through the think.
+    const opening = createTypewriter(agent, caret, {
+      onAdvance: scrollToEnd,
+      onDone: settle,
+    });
+
+    if (reduceMotion) {
+      stream.classList.add('is-armed');
+      opening.reveal();
+    } else {
+      opening.blank();
+      stream.classList.add('is-armed');
+
+      // Hold the opening turn until the card is on screen, so a visitor
+      // landing mid-page still sees it play rather than arriving finished.
+      const openingTurn = () => think(() => {
+        caret.classList.add('is-typing');
+        opening.play();
+      });
+
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+          if (!entries[0].isIntersecting) return;
+          observer.disconnect();
+          openingTurn();
+        }, { threshold: 0.25 });
+        observer.observe(root);
+      } else {
+        openingTurn();
+      }
+    }
+  }
 </script>
