@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import GridBackground from '../components/GridBackground.astro';
+import CodeWindow from '../components/CodeWindow.astro';
 
 const persona = {
   name: "Kaiwen Yao",
@@ -197,38 +198,7 @@ const icons: Record<string, string> = {
 
           <!-- Right: Code Window -->
           <div class="order-2 flex lg:justify-start lg:ml-12 min-w-0">
-            <div class="w-full max-w-3xl min-w-0">
-              <!-- macOS Window Frame -->
-              <div class="bg-[#fafafa] rounded-xl overflow-hidden shadow-xl shadow-black/[0.06] border border-[#ececf1]">
-                <!-- Title Bar -->
-                <div class="flex items-center gap-2 px-4 py-3 bg-[#f0f0f0] border-b border-[#ececf1]">
-                  <div class="w-3 h-3 rounded-full bg-[#ff5f57]"></div>
-                  <div class="w-3 h-3 rounded-full bg-[#febc2e]"></div>
-                  <div class="w-3 h-3 rounded-full bg-[#28c840]"></div>
-                  <span class="ml-4 text-xs text-[#8a8a8a]">coder.js</span>
-                </div>
-                <!-- Code Content -->
-                <div class="p-4 sm:p-6 font-mono text-sm sm:text-base leading-relaxed overflow-x-auto">
-                  <div class="space-y-1 leading-tight">
-                    <div><span class="text-[#a21caf]">const</span> <span class="text-[#2563eb]">coder</span> <span class="text-[#6b6b6b]">=</span> <span class="text-[#6b6b6b]">{</span></div>
-                    <div class="pl-6"><span class="text-[#2563eb]">name</span><span class="text-[#6b6b6b]">:</span> <span class="text-[#0a7b38]">'Kaiwen Yao'</span><span class="text-[#6b6b6b]">,</span></div>
-                    <div class="pl-6"><span class="text-[#2563eb]">focus</span><span class="text-[#6b6b6b]">:</span> <span class="text-[#0a7b38]">'Backend & full-stack systems'</span><span class="text-[#6b6b6b]">,</span></div>
-                    <div class="pl-6"><span class="text-[#2563eb]">stack</span><span class="text-[#6b6b6b]">:</span> <span class="text-[#a8340f]">['Java'</span><span class="text-[#6b6b6b]">,</span> <span class="text-[#0a7b38]">'Spring Boot'</span><span class="text-[#6b6b6b]">,</span> <span class="text-[#0a7b38]">'Go'</span><span class="text-[#6b6b6b]">,</span> <span class="text-[#0a7b38]">'FastAPI'</span><span class="text-[#6b6b6b]">,</span></div>
-                    <div class="pl-10"><span class="text-[#0a7b38]">'React'</span><span class="text-[#6b6b6b]">,</span> <span class="text-[#0a7b38]">'TypeScript'</span><span class="text-[#6b6b6b]">,</span> <span class="text-[#0a7b38]">'PostgreSQL'</span><span class="text-[#6b6b6b]">,</span> <span class="text-[#0a7b38]">'Docker'</span><span class="text-[#6b6b6b]">],</span></div>
-                    <div class="pl-6"><span class="text-[#2563eb]">building</span><span class="text-[#6b6b6b]">:</span> <span class="text-[#0a7b38]">'Reliable APIs, data products, AI features'</span><span class="text-[#6b6b6b]">,</span></div>
-                    <div class="pl-6"><span class="text-[#2563eb]">availableFor</span><span class="text-[#6b6b6b]">:</span> <span class="text-[#6b6b6b]">()</span> <span class="text-[#6b6b6b]">=></span> <span class="text-[#6b6b6b]">{</span></div>
-                    <div class="pl-8"><span class="text-[#a21caf]">return</span></div>
-                    <div class="pl-10"><span class="text-[#6b6b6b]">(</span></div>
-                    <div class="pl-10"><span class="text-[#0a7b38]">'Backend Engineering'</span></div>
-                    <div class="pl-10"><span class="text-[#a8340f]">||</span> <span class="text-[#0a7b38]">'Full-Stack Development'</span></div>
-                    <div class="pl-10"><span class="text-[#a8340f]">||</span> <span class="text-[#0a7b38]">'AI-enabled Products'</span></div>
-                    <div class="pl-10"><span class="text-[#6b6b6b]">);</span></div>
-                    <div class="pl-8"><span class="text-[#6b6b6b]">}</span></div>
-                    <div><span class="text-[#6b6b6b]">};</span></div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <CodeWindow />
           </div>
         </div>
       </div>
