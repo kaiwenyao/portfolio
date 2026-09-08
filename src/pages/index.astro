@@ -6,22 +6,27 @@ import TuiWindow from '../components/TuiWindow.astro';
 const persona = {
   name: "Kaiwen Yao",
   title: "MSc Computer Science Student / Backend & Full-Stack Developer",
-  intro: "First-year MSc Computer Science student at University College Dublin with an engineering background from Beihang University. I build production-style backend and full-stack applications with Java, Spring Boot, Go, FastAPI, React, TypeScript, MySQL, PostgreSQL, Redis, Docker, and Jenkins, with a focus on reliable systems, clear APIs, and AI-enabled software products.",
+  intro: "MSc Computer Science student at University College Dublin with an engineering background from Beihang University. I build production-style backend and full-stack applications with Java, Spring Boot, Go, FastAPI, React, TypeScript, MySQL, PostgreSQL, Redis, Kafka, Docker, and Kubernetes, with a focus on reliable systems, clear APIs, and AI-enabled software products.",
   skills: [
     { name: "Java", icon: "java" },
+    { name: "Go", icon: "go" },
     { name: "TypeScript", icon: "typescript" },
     { name: "Python", icon: "python" },
     { name: "C++", icon: "cplusplus" },
-    { name: "React", icon: "react" },
     { name: "Spring Boot", icon: "springboot" },
+    { name: "FastAPI", icon: "fastapi" },
+    { name: "Kafka", icon: "kafka" },
+    { name: "Redis", icon: "redis" },
     { name: "MySQL", icon: "mysql" },
     { name: "PostgreSQL", icon: "postgresql" },
-    { name: "Docker", icon: "docker" },
-    { name: "Git", icon: "git" },
-    { name: "Tailwind CSS", icon: "tailwind" },
-    { name: "AWS", icon: "aws" },
+    { name: "React", icon: "react" },
     { name: "Vue", icon: "vue" },
-    { name: "JavaScript", icon: "javascript" },
+    { name: "Next.js", icon: "nextjs" },
+    { name: "Tailwind CSS", icon: "tailwind" },
+    { name: "Docker", icon: "docker" },
+    { name: "Kubernetes", icon: "kubernetes" },
+    { name: "Jenkins", icon: "jenkins" },
+    { name: "Git", icon: "git" },
   ],
   socials: [
     { name: "GitHub", url: "https://github.com/kaiwenyao", icon: "github" },
@@ -30,70 +35,84 @@ const persona = {
   ],
   education: [
     {
-      period: "2025 - Present",
-      degree: "M.S. Computer Science",
+      period: "Sep 2025 - Dec 2026",
+      degree: "Master of Computer Science",
       school: "University College Dublin",
       description: "Dublin, Ireland"
     },
     {
-      period: "2021 - 2025",
-      degree: "B.S. Power Engineering of Flight Vehicles",
+      period: "Sep 2021 - Sep 2025",
+      degree: "Bachelor of Power Engineering of Flight Vehicles",
       school: "Beihang University",
-      description: "Beijing, China"
+      description: "Beijing, China · Chinese Government Scholarship (2023) · Academic Excellence Scholarship, 2nd Prize (2024)"
     }
   ],
   experience: [
     {
-      period: "Mar 2026 - Apr 2026",
-      role: "Lead Backend Developer",
-      company: "TrueMoment — Snowfall Ltd (Remote)",
+      period: "Mar 2026 - Jun 2026",
+      role: "Software Engineer Intern",
+      company: "TrueMoment — Snowfall Ltd",
       bullets: [
-        "Led backend development for a dual-camera social app, building the Go API with Gin, GORM, MySQL, and Redis in a layered Handler to Service to Repo architecture.",
-        "Delivered core social modules covering SMS/JWT auth, Aliyun OSS image upload, posts, cursor-paginated feeds, likes, comments, follows, notifications, and search.",
-        "Designed security and data workflows including Redis-backed logout token blacklisting, automatic SQL migrations, CDN-backed media URLs, and event-driven notifications.",
-        "Built unit and integration test coverage with Go testing and testcontainers-go, plus Docker packaging and Alibaba Cloud Yunxiao CI/CD."
+        "Built TrueMoment, a low-pressure social platform for sharing spontaneous moments through dual-camera photos, developing the backend API end-to-end with Go, Gin, GORM, and MySQL.",
+        "Implemented 9 production modules across authentication, posts, feeds, social interactions, notifications, and search.",
+        "Applied a layered Handler → Service → Repository architecture with JWT authentication and Redis token revocation.",
+        "Integrated AliCloud OSS + CDN for scalable media storage and delivery, with cursor-paginated feed APIs.",
+        "Delivered production deployment with automated unit/integration testing, AliCloud Yunxiao CI/CD, ACR image publishing, and main-branch deployments."
       ]
     }
   ],
   projects: [
     {
+      name: "EventPulse",
+      tag: "AI-Powered Distributed Event Ticketing Platform",
+      period: "2025 - 2026",
+      tech: ["React", "Spring Boot", "PostgreSQL", "Kafka", "Redis", "Kubernetes", "FastAPI", "LangChain", "SeaweedFS", "Argo CD"],
+      bullets: [
+        "Built a distributed ticketing platform with React, Spring Boot, PostgreSQL, Kafka, Redis, and Kubernetes, using independently deployable API/worker services. Implemented Kafka-based booking, wallet, and cart workflows with Transactional Outbox, idempotent consumers, partition ordering, and broker-failure recovery.",
+        "Implemented multi-replica SSE delivery with Kubernetes Services and Redis Pub/Sub, supporting cross-instance event propagation and reconnect backfill. Deployed SeaweedFS as S3-compatible storage with direct/proxied delivery, soft deletion, and asynchronous cleanup.",
+        "Built a FastAPI + LangChain AI service for event discovery and copywriting, with service authentication and rate limiting. Enforced quality gates with Checkstyle, SpotBugs, and ESLint across GitHub Actions and Jenkins; tested distributed workflows with Testcontainers and Playwright, with GitOps deployments via Argo CD."
+      ],
+      url: "https://eventpulse.kaiwen.dev/",
+      highlight: "Distributed Kafka workflows with Transactional Outbox and GitOps deployments"
+    },
+    {
       name: "Firmament Take-Out",
       tag: "Full-Stack Food Delivery Platform",
       period: "2025",
-      tech: ["React 19", "TypeScript", "Spring Boot 3", "MyBatis Plus", "MySQL", "WebSocket", "Redis", "Jenkins"],
+      tech: ["React 19", "TypeScript", "Spring Boot 3", "MyBatis Plus", "MySQL", "WebSocket", "Redis", "Docker", "Jenkins", "Kubernetes"],
       bullets: [
-        "Built an end-to-end food-delivery platform to replace fragmented hand-offs between customers and restaurant staff, unifying menu discovery, checkout, tracking, fulfilment, and reporting. Customers receive transparent order progress while staff manage one consistent operational workflow.",
-        "Architected separate React 19 + TypeScript mobile and admin SPAs around a modular Spring Boot 3 / MyBatis Plus / MySQL service with distinct customer and staff access paths. Used WebSocket order updates; Redis cache hits reduced average latency by 57.6% across 10,000 requests.",
-        "Engineered transaction-safe ordering with server-side total validation, atomic order and line-item persistence, controlled state transitions, and scheduled cancellation of unpaid orders. Reviewed AI-drafted JUnit edge cases before adding the validated suite to Jenkins regression testing."
+        "Designed separate React 19 + TypeScript applications for customers and merchants, with mobile-first ordering for customers and menu management, order fulfilment, and ECharts analytics for merchants. Isolated /user and /admin API routes with dedicated JWT interceptors, separate signing keys, and independent public-endpoint allowlists.",
+        "Implemented WebSocket-based order updates and Redis caching, reducing average latency by 57.6% across 10,000 requests. Engineered transaction-safe ordering with server-side validation, atomic persistence, controlled state transitions, and automated cancellation of unpaid orders.",
+        "Achieved 92.5% backend line coverage and 90%+ frontend statement coverage. Automated Docker CI/CD with Jenkins on Kubernetes, using ephemeral Maven/Node Pods for testing, image builds, and deployments."
       ],
       url: "https://firmament-admin.kaiwen.dev/",
       highlight: "57.6% lower average latency across 10,000 requests"
     },
     {
       name: "Dublin Bikes Assistant",
-      tag: "Real-Time Bike-Sharing Intelligence Platform",
+      tag: "Intelligent Bike-Sharing & Journey Planning Platform",
       period: "2025 - 2026",
-      tech: ["React", "TypeScript", "Spring Boot", "Java 21", "PostgreSQL", "JPA", "Flyway", "FastAPI", "scikit-learn", "LangChain"],
+      tech: ["React", "TypeScript", "Spring Boot", "Java 21", "PostgreSQL", "JPA", "Flyway", "FastAPI", "scikit-learn", "LangChain", "Jenkins", "Kubernetes"],
       bullets: [
-        "Built a real-time mobility platform to reduce uncertainty when bikes or docking spaces become unavailable. It combines live conditions, historical trends, hourly forecasts, route guidance, and personalised assistance to support faster, more reliable travel decisions.",
-        "Designed a service-oriented architecture spanning a React + TypeScript SPA, Spring Boot / Java 21 gateway, PostgreSQL / JPA / Flyway persistence, Python ingestion, and FastAPI prediction and chat services. The gateway centralises authentication, business rules, session ACLs, and internal-service access.",
-        "Implemented a journey optimiser that filters fresh station availability, ranks nearby candidates, and uses Google Maps routing to minimise combined walking and cycling time. Integrated hourly scikit-learn forecasts and a secured LangChain + DeepSeek assistant with streamed responses and persistent history."
+        "Built a Python data ingestion pipeline for station availability and weather data, with independent polling, retry handling, transactional writes, and batched PostgreSQL retention cleanup.",
+        "Built a LangChain + DeepSeek AI assistant with location-aware tool calling for live station availability, SSE streaming, and persistent chat history; integrated hourly scikit-learn availability forecasts. Built a journey optimiser that ranks nearby stations and uses Google Maps routing to minimise combined walking and cycling time.",
+        "Separated prediction and conversational workloads into dedicated Python services behind a Spring Boot gateway centralising authentication, business rules, session ACLs, and internal-service access. Delivered five containerised services with Jenkins/Kubernetes CI/CD and quality gates with JUnit 5, Mockito, Testcontainers, and pytest."
       ],
       url: "https://bikes.kaiwen.dev",
       highlight: "Live conditions, hourly forecasts, optimised routes, and AI assistance"
     },
     {
       name: "UCDHub",
-      tag: "Campus Community Platform for UCD Students",
+      tag: "Campus Community Platform with AI Advising",
       period: "2025 - 2026",
-      tech: ["React", "TypeScript", "FastAPI", "SQLAlchemy 2.0", "Redis", "JWT"],
+      tech: ["React", "TypeScript", "FastAPI", "SQLAlchemy 2.0", "Redis", "JWT", "Alibaba Cloud OSS", "Jenkins", "Kubernetes"],
       bullets: [
-        "Built a multilingual campus community to bring UCD course reviews, rankings, second-hand listings, and rentals from disconnected channels into one searchable platform. It reduces the effort required to compare courses and discover trusted student information.",
-        "Structured 6,000+ course records into a searchable catalogue with reviews and multi-dimensional rankings, backed by a React + TypeScript SPA and async FastAPI / SQLAlchemy 2.0 API. Kept discovery responsive through pagination and Redis-backed caching.",
-        "Designed a contribution-driven points and membership model that rewards check-ins and reviews while unlocking broader content access. Secured user-generated content through UCD email verification, rotating JWTs, Redis-backed revocation, rate limiting, and ownership checks."
+        "Built a React + TypeScript review attachment workflow with Alibaba Cloud OSS, supporting direct uploads, server-side validation, and time-limited presigned downloads.",
+        "Built a tool-calling AI assistant for UCD course discovery, second-hand listings, and rentals, using an OpenAI-compatible LLM API with SSE streaming and Redis-backed chat history. Optimised search with Redis caching, reducing P95 latency by 92.1% (949.7 ms to 74.8 ms) and increasing throughput 11.95× in matched benchmarks with 10 concurrent clients.",
+        "Designed a contribution-based access model and secured user-generated content with UCD email verification, rotating JWTs, Redis-backed revocation, rate limiting, and ownership checks. Containerised React/FastAPI services with Jenkins/Kubernetes CI/CD; built tests with pytest, Testcontainers, Vitest, and React Testing Library."
       ],
       url: "https://ucd-hub.com/",
-      highlight: "Searchable multilingual community with 6,000+ UCD course records"
+      highlight: "Redis caching cut P95 search latency by 92.1% (949.7 ms → 74.8 ms)"
     }
   ]
 };
