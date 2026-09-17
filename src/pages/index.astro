@@ -51,8 +51,7 @@ const persona = {
     {
       period: "Mar 2026 - Jun 2026",
       role: "Software Engineer Intern",
-      company: "TrueMoment",
-      entity: "Snowfall Ltd (Lianyungang Ganyu District, Individual Proprietorship)",
+      company: "Snowfall Ltd (Lianyungang Ganyu District, Individual Proprietorship)",
       bullets: [
         "Built TrueMoment, a low-pressure social platform for sharing spontaneous moments through dual-camera photos, developing the backend API end-to-end with Go, Gin, GORM, and MySQL.",
         "Implemented 9 production modules across authentication, posts, feeds, social interactions, notifications, and search.",
@@ -66,7 +65,6 @@ const persona = {
     {
       name: "EventPulse",
       tag: "AI-Powered Distributed Event Ticketing Platform",
-      period: "2025 - 2026",
       tech: ["React", "Spring Boot", "PostgreSQL", "Kafka", "Redis", "Kubernetes", "FastAPI", "LangChain", "SeaweedFS", "Argo CD"],
       bullets: [
         "Built a distributed ticketing platform with React, Spring Boot, PostgreSQL, Kafka, Redis, and Kubernetes, using independently deployable API/worker services. Implemented Kafka-based booking, wallet, and cart workflows with Transactional Outbox, idempotent consumers, partition ordering, and broker-failure recovery.",
@@ -79,7 +77,6 @@ const persona = {
     {
       name: "Firmament Take-Out",
       tag: "Food Delivery Platform",
-      period: "2025",
       tech: ["React 19", "TypeScript", "Spring Boot 3", "MyBatis Plus", "MySQL", "WebSocket", "Redis", "Docker", "Jenkins", "Kubernetes"],
       bullets: [
         "Designed separate React 19 + TypeScript applications for customers and merchants, with mobile-first ordering for customers and menu management, order fulfilment, and ECharts analytics for merchants. Isolated /user and /admin API routes with dedicated JWT interceptors, separate signing keys, and independent public-endpoint allowlists.",
@@ -92,7 +89,6 @@ const persona = {
     {
       name: "Dublin Bikes Assistant",
       tag: "Intelligent Bike-Sharing & Journey Planning Platform",
-      period: "2025 - 2026",
       tech: ["React", "TypeScript", "Spring Boot", "Java 21", "PostgreSQL", "JPA", "Flyway", "FastAPI", "scikit-learn", "LangChain", "Jenkins", "Kubernetes"],
       bullets: [
         "Built a Python data ingestion pipeline for station availability and weather data, with independent polling, retry handling, transactional writes, and batched PostgreSQL retention cleanup.",
@@ -105,7 +101,6 @@ const persona = {
     {
       name: "UCDHub",
       tag: "Campus Community Platform with AI Advising",
-      period: "2025 - 2026",
       tech: ["React", "TypeScript", "FastAPI", "SQLAlchemy 2.0", "Redis", "JWT", "Alibaba Cloud OSS", "Jenkins", "Kubernetes"],
       bullets: [
         "Built a React + TypeScript review attachment workflow with Alibaba Cloud OSS, supporting direct uploads, server-side validation, and time-limited presigned downloads.",
@@ -308,7 +303,6 @@ const icons: Record<string, string> = {
                   <div>
                     <h3 class="text-xl md:text-2xl font-bold text-[#0d0d0d]">{project.name}</h3>
                     <p class="text-[#5b5bf5] text-sm mt-1">{project.tag}</p>
-                    <p class="text-[#8a8a8a] text-xs mt-1">{project.period}</p>
                   </div>
                   <a
                     href={project.url}
@@ -368,7 +362,6 @@ const icons: Record<string, string> = {
                 </div>
                 <h3 class="text-xl md:text-2xl font-bold text-[#0d0d0d]">{exp.role}</h3>
                 <div class="text-[#5b5bf5] mt-1">{exp.company}</div>
-                {exp.entity && <div class="text-[#8a8a8a] text-sm mt-1">{exp.entity}</div>}
                 <ul class="space-y-2.5 mt-5">
                   {exp.bullets.map((bullet) => (
                     <li class="flex items-start gap-3 text-[#6b6b6b] text-sm leading-relaxed">
